@@ -5,6 +5,236 @@
 (function () {
     'use strict';
 
+    // ─── 新品推荐 · 轮播数据配置 ───
+    // 新增产品时，只需在数组里追加一项即可自动出现在推荐页
+    const carouselSlides = [
+        {
+            name: '天枢便签',
+            en: 'PolarisNote',
+            badges: [{ text: '推荐', cls: 'carousel-badge-new' }, { text: '桌面效率', cls: 'carousel-badge-polaris' }],
+            desc: '融合 AI 智能助手、看板式管理与富文本编辑的下一代效率神器，Windows / Linux 全平台原生支持。',
+            cover: 'assets/polaris-main.png',
+            link: 'https://yan-stone-computer.github.io/polarisnote-web/',
+            linkText: '了解更多'
+        },
+        {
+            name: '枢游记',
+            en: 'ShuYouJi',
+            badges: [{ text: '新品', cls: 'carousel-badge-new' }, { text: '鸿蒙原生', cls: 'carousel-badge-shuyouji' }],
+            desc: '基于 HarmonyOS NEXT 原生开发的 AI 智能旅行助手：图像修复、文化知识、行程规划，双端适配。',
+            cover: 'assets/shuyouji-poster.png',
+            link: 'https://yan-stone-computer.github.io/ShuYouJi-Web/',
+            linkText: '了解更多'
+        }
+        // ── 未来新品示例 ──
+        // {
+        //     name: '新产品名',
+        //     en: 'NewProduct',
+        //     badges: [{ text: 'NEW', cls: 'carousel-badge-new' }, { text: '分类', cls: 'carousel-badge-polaris' }],
+        //     desc: '一句话简介……',
+        //     cover: 'assets/xxx.png',
+        //     link: 'https://example.com',
+        //     linkText: '了解更多'
+        // }
+    ];
+
+    // ─── 新品推荐 · 轮播渲染与交互 ───
+    const carouselTrack = document.getElementById('carouselTrack');
+    if (carouselTrack) {
+        const viewport = document.getElementById('carouselViewport');
+        const prevBtn = document.getElementById('carouselPrev');
+        const nextBtn = document.getElementById('carouselNext');
+        const dotsWrap = document.getElementById('carouselDots');
+
+        let current = 0;
+        let autoTimer = null;
+        let cardGap = 24;
+
+        // 渲染卡片（含"即将上线"占位卡）
+        function renderCards() {
+            carouselSlides.forEach(slide => {
+                const card = document.createElement('div');
+                card.className = 'carousel-card';
+                card.innerHTML = `
+                    <div class="carousel-card-cover">
+                        <div class="carousel-badges">
+                            ${slide.badges.map(b => `<span class="carousel-badge ${b.cls}">${b.text}</span>`).join('')}
+                        </div>
+                        <img src="${slide.cover}" alt="${slide.name}" loading="lazy">
+                    </div>
+                    <div class="carousel-card-body">
+                        <h3 class="carousel-card-name">${slide.name}<span>${slide.en}</span></h3>
+                        <p class="carousel-card-desc">${slide.desc}</p>
+                        <a href="${slide.link}" target="_blank" class="carousel-card-link">
+                            ${slide.linkText}
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                        </a>
+                    </div>
+                `;
+                carouselTrack.appendChild(card);
+            });
+
+            // 占位卡
+            const soonCard = document.createElement('div');
+            soonCard.className = 'carousel-card carousel-card-soon';
+            soonCard.innerHTML = `
+                <div class="carousel-soon-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                </div>
+                <h4>更多产品，即将上线</h4>
+                <p>天枢序列持续探索 AI 原生应用的边界，敬请期待</p>
+            `;
+            carouselTrack.appendChild(soonCard);
+        }
+
+        // 计算每屏可见卡片数与最大索引
+        function getMetrics() {
+            const card = carouselTrack.querySelector('.carousel-card');
+            if (!card) return { perView: 1, maxIndex: 0, step: 1 };
+            const cardWidth = card.getBoundingClientRect().width;
+            const viewportWidth = viewport ? viewport.getBoundingClientRect().width : cardWidth;
+            const perView = Math.max(1, Math.floor((viewportWidth + cardGap) / (cardWidth + cardGap)));
+            const total = carouselTrack.children.length;
+            const maxIndex = Math.max(0, total - perView);
+            return { perView, maxIndex };
+        }
+
+        function update() {
+            const { maxIndex } = getMetrics();
+            current = Math.min(current, maxIndex);
+            const card = carouselTrack.querySelector('.carousel-card');
+            const cardWidth = card ? card.getBoundingClientRect().width : 0;
+            const offset = current * (cardWidth + cardGap);
+            carouselTrack.style.transform = `translateX(-${offset}px)`;
+
+            // Dots
+            if (dotsWrap) {
+                dotsWrap.innerHTML = '';
+                for (let i = 0; i <= maxIndex; i++) {
+                    const dot = document.createElement('button');
+                    dot.className = 'carousel-dot' + (i === current ? ' active' : '');
+                    dot.setAttribute('aria-label', `第 ${i + 1} 页`);
+                    dot.addEventListener('click', () => {
+                        current = i;
+                        update();
+                        restartAuto();
+                    });
+                    dotsWrap.appendChild(dot);
+                }
+            }
+
+            if (prevBtn) prevBtn.disabled = current === 0;
+            if (nextBtn) nextBtn.disabled = current >= maxIndex;
+        }
+
+        function next() {
+            const { maxIndex } = getMetrics();
+            if (current < maxIndex) {
+                current++;
+                update();
+            }
+        }
+
+        function prev() {
+            if (current > 0) {
+                current--;
+                update();
+            }
+        }
+
+        function startAuto() {
+            stopAuto();
+            autoTimer = setInterval(() => {
+                const { maxIndex } = getMetrics();
+                if (current >= maxIndex) {
+                    current = 0;
+                    update();
+                } else {
+                    next();
+                }
+            }, 5000);
+        }
+
+        function stopAuto() {
+            if (autoTimer) {
+                clearInterval(autoTimer);
+                autoTimer = null;
+            }
+        }
+
+        function restartAuto() {
+            stopAuto();
+            startAuto();
+        }
+
+        // 拖拽滑动
+        let isDragging = false;
+        let startX = 0;
+        let startScrollOffset = 0;
+
+        function dragStart(e) {
+            isDragging = true;
+            startX = (e.touches ? e.touches[0].clientX : e.clientX);
+            startScrollOffset = current;
+            carouselTrack.classList.add('dragging');
+            stopAuto();
+        }
+
+        function dragMove(e) {
+            if (!isDragging) return;
+            const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
+            const dx = clientX - startX;
+            if (Math.abs(dx) > 8) e.preventDefault();
+            // 半透明跟随效果
+            const card = carouselTrack.querySelector('.carousel-card');
+            if (card) {
+                const cardWidth = card.getBoundingClientRect().width + cardGap;
+                carouselTrack.style.transform = `translateX(${(startScrollOffset * -cardWidth) + dx}px)`;
+            }
+        }
+
+        function dragEnd(e) {
+            if (!isDragging) return;
+            isDragging = false;
+            carouselTrack.classList.remove('dragging');
+            const clientX = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
+            const dx = clientX - startX;
+            const card = carouselTrack.querySelector('.carousel-card');
+            const threshold = card ? card.getBoundingClientRect().width / 4 : 40;
+
+            if (Math.abs(dx) > threshold) {
+                if (dx < 0) next();
+                else prev();
+            } else {
+                update();
+            }
+            restartAuto();
+        }
+
+        carouselTrack.addEventListener('mousedown', dragStart);
+        window.addEventListener('mousemove', dragMove);
+        window.addEventListener('mouseup', dragEnd);
+        carouselTrack.addEventListener('touchstart', dragStart, { passive: true });
+        carouselTrack.addEventListener('touchmove', dragMove, { passive: false });
+        carouselTrack.addEventListener('touchend', dragEnd);
+
+        if (prevBtn) prevBtn.addEventListener('click', () => { prev(); restartAuto(); });
+        if (nextBtn) nextBtn.addEventListener('click', () => { next(); restartAuto(); });
+
+        // 悬停暂停
+        const carouselWrap = document.querySelector('.carousel');
+        if (carouselWrap) {
+            carouselWrap.addEventListener('mouseenter', stopAuto);
+            carouselWrap.addEventListener('mouseleave', startAuto);
+        }
+
+        renderCards();
+        update();
+        startAuto();
+
+        window.addEventListener('resize', () => update());
+    }
+
     // ─── Scroll Progress ───
     const scrollProgress = document.getElementById('scrollProgress');
     if (scrollProgress) {

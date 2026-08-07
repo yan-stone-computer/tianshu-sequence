@@ -27,6 +27,7 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about" class="nav-link">关于我们</a></li>
                 <li><a href="#products" class="nav-link">产品矩阵</a></li>
+                <li><a href="#showcase" class="nav-link">新品推荐</a></li>
                 <li><a href="#polaris" class="nav-link">天枢便签</a></li>
                 <li><a href="#shuyouji" class="nav-link">枢游记</a></li>
                 <li><a href="#vision" class="nav-link">技术愿景</a></li>
@@ -221,6 +222,34 @@
                         </a>
                     </div>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Product Carousel -->
+    <section class="section section-showcase" id="showcase">
+        <div class="section-inner">
+            <div class="section-label center">
+                <span class="label-line"></span>
+                新品推荐
+                <span class="label-line"></span>
+            </div>
+            <h2 class="section-title reveal">探索天枢序列的产品世界</h2>
+            <p class="section-subtitle reveal">从桌面效率到鸿蒙生态，每一款产品都在重新定义体验边界</p>
+
+            <div class="carousel reveal">
+                <div class="carousel-viewport" id="carouselViewport">
+                    <div class="carousel-track" id="carouselTrack">
+                        <!-- 产品卡片由 script.js 动态渲染 -->
+                    </div>
+                </div>
+                <button class="carousel-arrow carousel-arrow-prev" id="carouselPrev" aria-label="上一张">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="carousel-arrow carousel-arrow-next" id="carouselNext" aria-label="下一张">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <div class="carousel-dots" id="carouselDots"></div>
             </div>
         </div>
     </section>

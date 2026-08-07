@@ -880,6 +880,281 @@ ul {
     gap: 12px;
 }
 
+/* --- Product Carousel --- */
+.section-showcase {
+    background: var(--c-bg-alt);
+}
+
+.carousel {
+    position: relative;
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 56px;
+}
+
+.carousel-viewport {
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    -webkit-mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
+    mask-image: linear-gradient(90deg, transparent, black 4%, black 96%, transparent);
+}
+
+.carousel-track {
+    display: flex;
+    gap: 24px;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+    cursor: grab;
+    padding: 12px 0 24px;
+}
+
+.carousel-track.dragging {
+    cursor: grabbing;
+    transition: none;
+}
+
+.carousel-card {
+    flex: 0 0 340px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.carousel-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow-xl);
+}
+
+.carousel-card-cover {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 10;
+    background: var(--c-dark-2);
+}
+
+.carousel-card-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.carousel-card:hover .carousel-card-cover img {
+    transform: scale(1.06);
+}
+
+.carousel-card-cover::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(11, 15, 25, 0.05) 0%, rgba(11, 15, 25, 0.6) 100%);
+    pointer-events: none;
+}
+
+.carousel-badges {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    z-index: 2;
+    display: flex;
+    gap: 8px;
+}
+
+.carousel-badge {
+    padding: 4px 12px;
+    border-radius: 100px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.carousel-badge-new {
+    background: var(--c-orange);
+    color: white;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.4);
+}
+
+.carousel-badge-polaris {
+    background: rgba(99, 102, 241, 0.9);
+    color: white;
+}
+
+.carousel-badge-shuyouji {
+    background: rgba(13, 107, 78, 0.9);
+    color: white;
+}
+
+.carousel-card-body {
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.carousel-card-name {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 900;
+    color: var(--c-text);
+    margin-bottom: 4px;
+}
+
+.carousel-card-name span {
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--c-text-muted);
+    margin-left: 6px;
+}
+
+.carousel-card-desc {
+    font-size: 13px;
+    color: var(--c-text-secondary);
+    line-height: 1.7;
+    margin-bottom: 18px;
+    flex: 1;
+}
+
+.carousel-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--c-orange);
+    transition: gap 0.3s ease;
+    width: fit-content;
+}
+
+.carousel-card-link:hover {
+    gap: 10px;
+}
+
+/* Coming soon card */
+.carousel-card-soon {
+    border: 1.5px dashed var(--c-border);
+    background: transparent;
+    box-shadow: none;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    cursor: default;
+}
+
+.carousel-card-soon:hover {
+    transform: none;
+    border-color: var(--c-orange-border);
+    box-shadow: none;
+}
+
+.carousel-soon-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--c-orange-bg);
+    color: var(--c-orange);
+    margin-bottom: 20px;
+    transition: transform 0.4s ease;
+}
+
+.carousel-card-soon:hover .carousel-soon-icon {
+    transform: scale(1.08) rotate(90deg);
+}
+
+.carousel-card-soon h4 {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 900;
+    color: var(--c-text);
+    margin-bottom: 10px;
+}
+
+.carousel-card-soon p {
+    font-size: 13px;
+    color: var(--c-text-muted);
+    line-height: 1.7;
+    max-width: 240px;
+    margin: 0 auto;
+}
+
+/* Arrows */
+.carousel-arrow {
+    position: absolute;
+    top: 42%;
+    transform: translateY(-50%);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: 1px solid var(--c-border);
+    background: var(--c-bg);
+    color: var(--c-text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    z-index: 3;
+}
+
+.carousel-arrow:hover {
+    background: var(--c-orange);
+    border-color: var(--c-orange);
+    color: white;
+    box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+}
+
+.carousel-arrow:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.carousel-arrow:disabled:hover {
+    background: var(--c-bg);
+    border-color: var(--c-border);
+    color: var(--c-text-secondary);
+    box-shadow: var(--shadow-sm);
+}
+
+.carousel-arrow-prev { left: 0; }
+.carousel-arrow-next { right: 0; }
+
+/* Dots */
+.carousel-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.carousel-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 100px;
+    border: none;
+    background: var(--c-border);
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.35s ease;
+}
+
+.carousel-dot.active {
+    width: 24px;
+    background: var(--c-orange);
+}
+
 /* --- Product Detail Sections --- */
 .section-product-detail {
     background: var(--c-bg);
@@ -1575,6 +1850,14 @@ ul {
         grid-template-columns: 1fr;
     }
 
+    .carousel {
+        padding: 0 44px;
+    }
+
+    .carousel-card {
+        flex: 0 0 320px;
+    }
+
     .vision-grid {
         grid-template-columns: 1fr;
         gap: 48px;
@@ -1775,6 +2058,23 @@ ul {
         flex-direction: column;
         align-items: flex-start;
         gap: 16px;
+    }
+
+    .carousel {
+        padding: 0 8px;
+    }
+
+    .carousel-viewport {
+        -webkit-mask-image: none;
+        mask-image: none;
+    }
+
+    .carousel-card {
+        flex: 0 0 82%;
+    }
+
+    .carousel-arrow {
+        display: none;
     }
 
     .product-tags {
