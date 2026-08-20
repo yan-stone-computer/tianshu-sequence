@@ -296,6 +296,34 @@
         </div>
     </div>
 
+    <!-- 二维码弹窗（打赏作者 / 交流群） -->
+    <div class="qr-modal" id="qrModal" hidden>
+        <div class="qr-modal-backdrop" data-close></div>
+        <div class="qr-modal-panel" role="dialog" aria-modal="true" aria-label="二维码">
+            <button type="button" class="qr-modal-close" data-close aria-label="关闭">&times;</button>
+            <h3 class="qr-modal-title" id="qrModalTitle">打赏作者</h3>
+            <img class="qr-modal-img" id="qrModalImg" src="" alt="二维码">
+            <div class="qr-modal-group" id="qrModalGroup" hidden>
+                <span class="qr-group-label">QQ 群号</span>
+                <span class="qr-group-num" id="qrGroupNum">370626514</span>
+                <button type="button" class="qr-group-copy" id="qrGroupCopy">复制群号</button>
+            </div>
+            <p class="qr-modal-tip" id="qrModalTip">微信扫一扫，支持作者</p>
+        </div>
+    </div>
+
+    <!-- 悬浮：打赏（最显眼）+ 交流群 -->
+    <div class="qr-fab-stack">
+        <button type="button" class="qr-fab qr-fab-group" data-qr="group" aria-label="加入交流群">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            交流群
+        </button>
+        <button type="button" class="qr-fab qr-fab-donate" data-qr="donate" aria-label="打赏作者">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+            打赏作者
+        </button>
+    </div>
+
     <!-- Tech -->
     <section class="section section-vision" id="vision">
         <div class="section-inner">
@@ -415,6 +443,7 @@
                         <a href="https://github.com/yan-stone-computer" target="_blank">GitHub</a>
                         <a href="https://www.bilibili.com/video/BV18r5Q6TEBM/" target="_blank">天枢便签演示</a>
                         <a href="https://www.bilibili.com/video/BV1yEfSB8EoG/" target="_blank">枢游记演示</a>
+                        <a href="#" data-qr="group" class="qr-trigger">加入交流群</a>
                     </div>
                     <div class="footer-col">
                         <h5>关于</h5>

@@ -736,6 +736,99 @@
     renderArticles();
     loadStaticArticles();
 
+    // ─── 二维码弹窗（打赏作者 / 交流群） ───
+    const qrModal = document.getElementById('qrModal');
+    const qrModalTitle = document.getElementById('qrModalTitle');
+    const qrModalImg = document.getElementById('qrModalImg');
+    const qrModalTip = document.getElementById('qrModalTip');
+    const qrModalGroup = document.getElementById('qrModalGroup');
+
+    const QR_ITEMS = {
+        donate: {
+            title: '打赏作者',
+            img: 'assets/donate-qr.png',
+            tip: '微信扫一扫，支持作者一杯咖啡 ☕'
+        },
+        group: {
+            title: '加入 QQ 交流群',
+            img: 'assets/group-qr.jpg',
+            tip: 'QQ 扫码加入，或复制群号搜索'
+        }
+    };
+
+    function openQrModal(type) {
+        const item = QR_ITEMS[type];
+        if (!qrModal || !item) return;
+        if (qrModalTitle) qrModalTitle.textContent = item.title;
+        if (qrModalImg) qrModalImg.src = item.img;
+        if (qrModalTip) qrModalTip.textContent = item.tip;
+        if (qrModalGroup) qrModalGroup.hidden = type !== 'group';
+        qrModal.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeQrModal() {
+        if (!qrModal) return;
+        qrModal.hidden = true;
+        document.body.style.overflow = '';
+    }
+
+    document.querySelectorAll('[data-qr]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openQrModal(btn.dataset.qr);
+        });
+    });
+
+    if (qrModal) {
+        qrModal.addEventListener('click', (e) => {
+            if (e.target.closest('[data-close]')) closeQrModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeQrModal();
+        });
+    }
+
+    // 复制 QQ 群号（含 file:// 等非安全上下文降级方案）
+    function copyText(text) {
+        if (navigator.clipboard && window.isSecureContext) {
+            return navigator.clipboard.writeText(text);
+        }
+        return new Promise((resolve, reject) => {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.top = '0';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            let ok = false;
+            try { ok = document.execCommand('copy'); } catch (e) { ok = false; }
+            ta.remove();
+            ok ? resolve() : reject(new Error('copy failed'));
+        });
+    }
+
+    const qrGroupCopy = document.getElementById('qrGroupCopy');
+    if (qrGroupCopy) {
+        qrGroupCopy.addEventListener('click', () => {
+            const numEl = document.getElementById('qrGroupNum');
+            const num = (numEl && numEl.textContent.trim()) || '370626514';
+            copyText(num).then(() => {
+                qrGroupCopy.textContent = '已复制 ✓';
+                qrGroupCopy.classList.add('copied');
+                setTimeout(() => {
+                    qrGroupCopy.textContent = '复制群号';
+                    qrGroupCopy.classList.remove('copied');
+                }, 1600);
+            }).catch(() => {
+                qrGroupCopy.textContent = '复制失败，请手动选择复制';
+                setTimeout(() => { qrGroupCopy.textContent = '复制群号'; }, 1600);
+            });
+        });
+    }
+
     // ─── Scroll Progress ───
     const scrollProgress = document.getElementById('scrollProgress');
     if (scrollProgress) {
