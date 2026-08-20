@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>天枢序列 Tianshu Sequence — 以代码书写未来</title>
-    <meta name="description" content="天枢序列是一支专注于 AI 原生应用开发的团队，旗下拥有天枢便签 PolarisNote、枢游记 ShuYouJi 与陈汉升 ChenHanshen 三款产品。">
+    <meta name="description" content="天枢序列产品官网：集中介绍团队自研软件产品，提供各产品的官网、下载与源码入口。">
     <link rel="icon" type="image/png" href="assets/logo.png">
     <link rel="stylesheet" href="styles.css">
 </head>
@@ -24,7 +24,8 @@
             <ul class="nav-links" id="navLinks">
                 <li><a href="#about" class="nav-link">关于我们</a></li>
                 <li><a href="#products" class="nav-link">产品矩阵</a></li>
-                <li><a href="#vision" class="nav-link">技术愿景</a></li>
+                <li><a href="#articles" class="nav-link">技术文章</a></li>
+                <li><a href="#vision" class="nav-link">技术实现</a></li>
                 <li><a href="#contact" class="nav-link">联系我们</a></li>
             </ul>
             <a href="#products" class="nav-cta">探索产品</a>
@@ -44,15 +45,15 @@
             <div class="hero-text">
                 <div class="hero-badge">
                     <span class="badge-dot"></span>
-                    AI 原生 · 全栈自研 · 开源精神
+                    桌面 · 鸿蒙 · 安卓 产品官网
                 </div>
                 <h1 class="hero-title">
                     以代码书写未来<br>
                     <span class="hero-title-accent">天枢序列</span>
                 </h1>
                 <p class="hero-desc">
-                    我们是一支由青年开发者组成的创新团队，专注于人工智能与原生体验的深度融合。
-                    从桌面效率工具到鸿蒙生态应用，每一行代码都在重新定义人与数字世界的交互方式。
+                    本站是天枢序列官方网站，集中介绍团队自研软件产品，
+                    并提供各产品的官网、下载与源码入口。产品持续更新中。
                 </p>
                 <div class="hero-actions">
                     <a href="#products" class="btn btn-primary">
@@ -65,24 +66,24 @@
                     </a>
                 </div>
                 <div class="hero-stats">
-                    <div class="stat-item">
-                        <span class="stat-num" data-target="3">0</span>
-                        <span class="stat-label">核心产品</span>
+                    <div class="stat-item" id="statProducts">
+                        <span class="stat-num" data-target="0">0</span>
+                        <span class="stat-label">款产品</span>
                     </div>
                     <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-num" data-target="21">0</span>
-                        <span class="stat-label">+ 便签功能</span>
+                    <div class="stat-item" id="statPlatforms">
+                        <span class="stat-num" data-target="0">0</span>
+                        <span class="stat-label">个平台</span>
                     </div>
                     <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-num" data-target="8">0</span>
-                        <span class="stat-label">+ 旅行模块</span>
+                    <div class="stat-item" id="statFeatures">
+                        <span class="stat-num" data-target="0">0</span>
+                        <span class="stat-label">项功能亮点</span>
                     </div>
                     <div class="stat-divider"></div>
-                    <div class="stat-item">
-                        <span class="stat-num" data-target="100">0</span>
-                        <span class="stat-label">% 开源免费</span>
+                    <div class="stat-item" id="statRepos">
+                        <span class="stat-num" data-target="0">0</span>
+                        <span class="stat-label">个开源仓库</span>
                     </div>
                 </div>
             </div>
@@ -112,36 +113,36 @@
                 关于天枢序列
                 <span class="label-line"></span>
             </div>
-            <h2 class="section-title reveal">一群相信技术的年轻人</h2>
-            <p class="section-subtitle reveal">用工程化思维解决真实问题，用产品化表达技术价值</p>
+            <h2 class="section-title reveal">关于我们</h2>
+            <p class="section-subtitle reveal">本站为天枢序列产品官网，集中介绍团队已发布的三款产品及其获取方式。</p>
             <div class="about-grid">
                 <div class="about-card reveal">
                     <div class="about-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
                     </div>
-                    <h3>产品驱动</h3>
-                    <p>我们不堆砌技术，而是围绕真实使用场景打磨每一处细节，让功能自然融入用户的工作流。</p>
+                    <h3>自研产品</h3>
+                    <p>官网收录 <b id="aboutProductCount">0</b> 款自研产品，覆盖桌面效率、旅行助手与角色对话等场景，持续更新中。</p>
                 </div>
                 <div class="about-card reveal">
                     <div class="about-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
                     </div>
-                    <h3>AI 原生</h3>
-                    <p>从架构设计之初就将大模型能力纳入产品核心，让 AI 不是附加功能，而是底层能力。</p>
+                    <h3>AI 能力集成</h3>
+                    <p>三款产品均集成大模型能力：便签 AI 助手、旅行 AI 客服、角色 AI 对话，密钥由用户自行配置。</p>
                 </div>
                 <div class="about-card reveal">
                     <div class="about-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg>
                     </div>
-                    <h3>开源协作</h3>
-                    <p>坚信开放的力量，核心产品完全开源免费，与社区一起成长、迭代、创造价值。</p>
+                    <h3>开源项目</h3>
+                    <p>相关代码仓库已在 GitHub 公开（MIT 协议），接受 Issue 反馈与社区贡献。</p>
                 </div>
                 <div class="about-card reveal">
                     <div class="about-icon">
                         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
                     </div>
-                    <h3>跨端体验</h3>
-                    <p>无论是桌面端、鸿蒙生态还是安卓端，我们都追求原生级的性能表现与一致的设计语言。</p>
+                    <h3>原生开发</h3>
+                    <p>Qt 6（桌面）、ArkTS（鸿蒙）、Kotlin（安卓）原生实现，不使用网页套壳。</p>
                 </div>
             </div>
         </div>
@@ -155,390 +156,127 @@
                 产品矩阵
                 <span class="label-line"></span>
             </div>
-            <h2 class="section-title reveal">三款产品，同一种极致追求</h2>
-            <p class="section-subtitle reveal">覆盖桌面效率、移动旅行与角色陪伴三大场景，用 AI 赋能每一种生活方式</p>
-            <div class="products-grid">
-                <div class="product-card product-card-polaris reveal" id="polarisCard">
-                    <div class="product-card-glow"></div>
-                    <div class="product-card-inner">
-                        <div class="product-card-header">
-                            <div class="product-icon product-icon-polaris">
-                                <svg width="24" height="24" viewBox="0 0 28 28" fill="none">
-                                    <rect x="2" y="4" width="18" height="22" rx="3" fill="#7e57c2" opacity="0.9"/>
-                                    <rect x="6" y="0" width="18" height="22" rx="3" fill="#9575cd"/>
-                                    <line x1="10" y1="6" x2="20" y2="6" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                    <line x1="10" y1="10" x2="18" y2="10" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                    <line x1="10" y1="14" x2="16" y2="14" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
-                                </svg>
-                            </div>
-                            <div class="product-tags">
-                                <span>Qt 6</span>
-                                <span>跨平台</span>
-                                <span>AI 驱动</span>
-                            </div>
-                        </div>
-                        <h3 class="product-name">天枢便签 <span>PolarisNote</span></h3>
-                        <p class="product-desc">融合 AI 智能助手、看板式管理与富文本编辑于一体的下一代效率神器。本地存储、隐私至上，Windows / Linux 全平台原生支持。</p>
-                        <div class="product-features">
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>21+ 核心功能</span>
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>看板 + AI 客服</span>
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>文件智能分析</span>
-                        </div>
-                        <a href="#polaris" class="product-link">
-                            详细了解
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                        </a>
-                    </div>
+            <h2 class="section-title reveal">旗下产品</h2>
+            <p class="section-subtitle reveal">以下为官网收录的产品，可通过轮播浏览，或点击「查看全部产品」查看完整列表与获取方式。</p>
+            <div class="product-carousel reveal" id="productCarousel">
+                <div class="pc-track" id="pcTrack">
+                    <!-- 产品幻灯片由 script.js 动态渲染 -->
                 </div>
-                <div class="product-card product-card-shuyouji reveal" id="shuyoujiCard">
-                    <div class="product-card-glow"></div>
-                    <div class="product-card-inner">
-                        <div class="product-card-header">
-                            <div class="product-icon product-icon-shuyouji">
-                                <img src="assets/shuyouji-icon.png" alt="枢游记" width="24" height="24">
-                            </div>
-                            <div class="product-tags">
-                                <span>HarmonyOS</span>
-                                <span>ArkTS</span>
-                                <span>图像修复</span>
-                            </div>
-                        </div>
-                        <h3 class="product-name">枢游记 <span>ShuYouJi</span></h3>
-                        <p class="product-desc">基于 HarmonyOS NEXT 原生开发的 AI 智能旅行助手。图像修复、文化知识、行程规划、花费管理，让每一次旅行都更值得铭记。</p>
-                        <div class="product-features">
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>AI 图像修复</span>
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>手机/平板双端</span>
-                            <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>AI 文化知识</span>
-                        </div>
-                        <a href="#shuyouji" class="product-link">
-                            详细了解
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                        </a>
-                    </div>
-                </div>
-                <div class="product-card product-card-chenhansheng reveal" id="chenhanshengCard">
-                    <div class="product-card-glow"></div>
-                    <div class="product-card-inner">
-                        <div class="product-card-header">
-                            <div class="product-icon product-icon-chenhansheng">
-                                <img src="assets/chenhansheng-cover.jpg" alt="陈汉升" width="32" height="32">
-                            </div>
-                            <div class="product-tags">
-                                <span>Android</span>
-                                <span>Kotlin</span>
-                                <span>AI 对话</span>
-                            </div>
-                        </div>
-                        <div class="product-card-body">
-                            <h3 class="product-name">陈汉升 <span>ChenHanshen</span></h3>
-                            <p class="product-desc">把《我真没想重生啊》里的陈汉升装进手机——原生安卓 AI 角色扮演 App。人格对话、发图识图、AI 生图、剧情知识库开箱即用，人情世故、恋爱技巧、职场江湖啥都能聊。</p>
-                            <div class="product-features">
-                                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>陈汉升人格对话</span>
-                                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>发图识图</span>
-                                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>AI 生图</span>
-                                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>1000+ 章剧情知识库</span>
-                                <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>会话记忆</span>
-                            </div>
-                        </div>
-                        <a href="https://yan-stone-computer.github.io/awesome-chenhansheng-app/" target="_blank" class="product-link">
-                            前往产品官网
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        </a>
-                    </div>
+                <button class="pc-arrow pc-prev" id="pcPrev" aria-label="上一个产品">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="pc-arrow pc-next" id="pcNext" aria-label="下一个产品">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+                <div class="pc-dots" id="pcDots"></div>
+                <div class="pc-footer">
+                    <button type="button" class="pc-view-all" id="pcViewAll">
+                        查看全部产品
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                    </button>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Product Carousel -->
-    <section class="section section-showcase" id="showcase">
+    <!-- 查看全部产品弹层 -->
+    <div class="pc-modal" id="pcModal" hidden>
+        <div class="pc-modal-backdrop" data-close></div>
+        <div class="pc-modal-panel" role="dialog" aria-modal="true" aria-label="全部产品">
+            <div class="pc-modal-head">
+                <h3>全部产品</h3>
+                <button type="button" class="pc-modal-close" data-close aria-label="关闭">&times;</button>
+            </div>
+            <div class="pc-modal-grid" id="pcModalGrid"></div>
+        </div>
+    </div>
+
+    <!-- Tech Articles -->
+    <section class="section section-articles" id="articles">
         <div class="section-inner">
             <div class="section-label center">
                 <span class="label-line"></span>
-                新品推荐
+                技术文章
                 <span class="label-line"></span>
             </div>
-            <h2 class="section-title reveal">探索天枢序列的产品世界</h2>
-            <p class="section-subtitle reveal">从桌面效率、移动旅行到角色陪伴，每一款产品都在重新定义体验边界</p>
+            <h2 class="section-title reveal">社区技术文章</h2>
+            <p class="section-subtitle reveal">任何人都可以投稿分享技术文章，发布前需输入上传校验码。</p>
 
-            <div class="carousel reveal">
-                <div class="carousel-viewport" id="carouselViewport">
-                    <div class="carousel-track" id="carouselTrack">
-                        <!-- 产品卡片由 script.js 动态渲染 -->
-                    </div>
+            <div class="articles-layout">
+                <div class="articles-list" id="articleList">
+                    <!-- 文章由 script.js 渲染 -->
                 </div>
-                <button class="carousel-arrow carousel-arrow-prev" id="carouselPrev" aria-label="上一张">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-                </button>
-                <button class="carousel-arrow carousel-arrow-next" id="carouselNext" aria-label="下一张">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
-                </button>
-                <div class="carousel-dots" id="carouselDots"></div>
-            </div>
-        </div>
-    </section>
 
-    <!-- PolarisNote Detail -->
-    <section class="section section-product-detail section-polaris" id="polaris">
-        <div class="section-inner">
-            <div class="product-detail-header reveal">
-                <div class="product-detail-badge">桌面效率</div>
-                <h2 class="product-detail-title">天枢便签 <span>PolarisNote</span></h2>
-                <p class="product-detail-subtitle">重新定义笔记体验，让灵感与工作流更智能、更高效、更优雅</p>
-            </div>
-            <div class="product-showcase">
-                <div class="showcase-main reveal">
-                    <div class="showcase-frame">
-                        <div class="frame-bar">
-                            <div class="frame-dots">
-                                <span class="fd fd-r"></span>
-                                <span class="fd fd-y"></span>
-                                <span class="fd fd-g"></span>
+                <div class="article-upload reveal" id="articleUpload">
+                    <div class="au-head">
+                        <h3>投稿文章</h3>
+                        <p>填写标题、作者与内容，输入校验码后即可发布。</p>
+                    </div>
+                    <form id="articleForm" novalidate>
+                        <div class="au-field">
+                            <label for="artTitle">标题</label>
+                            <input id="artTitle" name="title" type="text" maxlength="60" placeholder="文章标题" required>
+                        </div>
+                        <div class="au-row">
+                            <div class="au-field">
+                                <label for="artAuthor">作者昵称</label>
+                                <input id="artAuthor" name="author" type="text" maxlength="20" placeholder="昵称或姓名" required>
                             </div>
-                            <span class="frame-title">天枢便签 — 主界面</span>
+                            <div class="au-field">
+                                <label for="artCategory">分类</label>
+                                <select id="artCategory" name="category"></select>
+                            </div>
                         </div>
-                        <img src="assets/polaris-main.png" alt="天枢便签主界面" class="showcase-img">
-                    </div>
-                </div>
-                <div class="showcase-grid">
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/polaris-kanban.png" alt="看板页面">
+                        <div class="au-field">
+                            <label for="artContent">内容</label>
+                            <textarea id="artContent" name="content" rows="8" maxlength="5000" placeholder="分享你的技术经验、踩坑记录或学习笔记…" required></textarea>
                         </div>
-                        <h4>看板管理</h4>
-                        <p>类 Trello 看板布局，多任务栏灵活组织工作流</p>
-                    </div>
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/polaris-editor.png" alt="富文本编辑">
+                        <div class="au-field">
+                            <label for="artCode">上传校验码</label>
+                            <input id="artCode" name="code" type="password" autocomplete="off" placeholder="输入校验码" required>
                         </div>
-                        <h4>富文本编辑</h4>
-                        <p>专业编辑器，格式、颜色、列表一应俱全</p>
-                    </div>
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/polaris-ai.png" alt="智能客服">
-                        </div>
-                        <h4>AI 智能客服</h4>
-                        <p>自然语言对话，随时解答问题、辅助创作</p>
-                    </div>
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/polaris-analysis.png" alt="文件分析">
-                        </div>
-                        <h4>文件分析</h4>
-                        <p>PDF / DOCX / Markdown 智能解析生成思维导图</p>
-                    </div>
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/polaris-dashboard.png" alt="数据仪表盘">
-                        </div>
-                        <h4>数据仪表盘</h4>
-                        <p>GitHub 风格贡献图，多维度可视化使用数据</p>
-                    </div>
-                    <div class="showcase-item showcase-item-cta reveal">
-                        <div class="showcase-cta-content">
-                            <h4>立即体验</h4>
-                            <p>开源免费，Windows / Linux 即开即用</p>
-                            <a href="https://yan-stone-computer.github.io/polarisnote-web/" target="_blank" class="btn btn-primary btn-sm">
-                                访问官网
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
+                        <div class="au-msg" id="artMsg" role="status"></div>
+                        <button type="submit" class="btn btn-primary" id="artSubmit">发布文章</button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- ShuYouJi Detail -->
-    <section class="section section-product-detail section-shuyouji" id="shuyouji">
-        <div class="section-inner">
-            <div class="product-detail-header reveal">
-                <div class="product-detail-badge product-detail-badge-shuyouji">鸿蒙原生</div>
-                <h2 class="product-detail-title">枢游记 <span>ShuYouJi</span></h2>
-                <p class="product-detail-subtitle">AI 驱动的智能旅行助手，让每一段旅程都充满文化深度与科技温度</p>
-            </div>
-            <div class="product-showcase product-showcase-shuyouji">
-                <div class="showcase-devices reveal">
-                    <div class="device device-phone">
-                        <div class="device-frame">
-                            <img src="assets/shuyouji-phone.png" alt="枢游记手机端">
-                        </div>
-                        <span class="device-label">手机端</span>
-                    </div>
-                    <div class="device device-tablet">
-                        <div class="device-frame">
-                            <img src="assets/shuyouji-tablet.png" alt="枢游记平板端">
-                        </div>
-                        <span class="device-label">平板端</span>
-                    </div>
-                </div>
-                <div class="showcase-grid">
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/shuyouji-defog.png" alt="图像去雾">
-                        </div>
-                        <h4>AI 图像修复</h4>
-                        <p>去雾、超分、锐化、色彩增强一站式处理</p>
-                    </div>
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/shuyouji-ai.png" alt="智能客服">
-                        </div>
-                        <h4>AI 智能客服</h4>
-                        <p>意图识别 + 指令模式，自然语言管理旅行</p>
-                    </div>
-                    <div class="showcase-item reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/shuyouji-memory.png" alt="旅行记忆">
-                        </div>
-                        <h4>图文旅行日记</h4>
-                        <p>图文混排记录旅程，与花费管理智能联动</p>
-                    </div>
-                    <div class="showcase-item showcase-item-wide reveal">
-                        <div class="showcase-img-frame">
-                            <img src="assets/shuyouji-poster.png" alt="枢游记品牌海报">
-                        </div>
-                        <h4>品牌视觉</h4>
-                        <p>科技感、人文温度、探索精神</p>
-                    </div>
-                    <div class="showcase-item showcase-item-cta reveal">
-                        <div class="showcase-cta-content">
-                            <h4>立即体验</h4>
-                            <p>HarmonyOS NEXT 原生应用，手机平板双端适配</p>
-                            <a href="https://yan-stone-computer.github.io/ShuYouJi-Web/" target="_blank" class="btn btn-shuyouji btn-sm">
-                                访问官网
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ChenHanshen Detail -->
-    <section class="section section-product-detail section-chenhansheng" id="chenhansheng">
-        <div class="section-inner">
-            <div class="product-detail-header reveal">
-                <div class="product-detail-badge product-detail-badge-chenhansheng">角色对话 · Android</div>
-                <h2 class="product-detail-title">陈汉升 <span>ChenHanshen</span></h2>
-                <p class="product-detail-subtitle">重生之人生导师——35 岁成功商人的灵魂，18 岁大学生的皮囊，把《我真没想重生啊》里的那个他装进你的手机</p>
-            </div>
-            <div class="product-showcase product-showcase-chenhansheng">
-                <div class="showcase-devices reveal">
-                    <div class="device device-phone">
-                        <div class="device-frame">
-                            <img src="assets/chenhansheng-screenshot.jpg" alt="陈汉升 APP 界面截图">
-                        </div>
-                        <span class="device-label">陈汉升 APP 实拍界面</span>
-                    </div>
-                </div>
-                <div class="chenhansheng-grid">
-                    <div class="chenhansheng-item reveal">
-                        <div class="chenhansheng-ico">
-                            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-                        </div>
-                        <div>
-                            <h4>陈汉升人格</h4>
-                            <p>口头禅、笑声、见人下菜的语气与江湖智慧，深度还原角色，跟你称兄道弟，不是"AI 分析"。</p>
-                        </div>
-                    </div>
-                    <div class="chenhansheng-item reveal">
-                        <div class="chenhansheng-ico">
-                            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-                        </div>
-                        <div>
-                            <h4>发图识图</h4>
-                            <p>截图、照片、表情包都能看，内置免费引擎自动切换，网络再差也有得用。</p>
-                        </div>
-                    </div>
-                    <div class="chenhansheng-item reveal">
-                        <div class="chenhansheng-ico">
-                            <svg viewBox="0 0 24 24"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                        </div>
-                        <div>
-                            <h4>1000+ 章剧情知识库</h4>
-                            <p>内置《我真没想重生啊》全文索引，聊到沈幼楚、萧容鱼、任何情节细节都能对得上原著。</p>
-                        </div>
-                    </div>
-                    <div class="chenhansheng-item reveal">
-                        <div class="chenhansheng-ico">
-                            <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                        </div>
-                        <div>
-                            <h4>纯原生 APP</h4>
-                            <p>Kotlin + Material 3 原生开发，不是网页套壳，启动快、手感顺、省电省流量。</p>
-                        </div>
-                    </div>
-                    <div class="chenhansheng-item reveal">
-                        <div class="chenhansheng-ico">
-                            <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-                        </div>
-                        <div>
-                            <h4>会话记忆</h4>
-                            <p>记得你说过的事、正在烦的事，下次接着聊像真哥们；清空对话，记忆同步清零。</p>
-                        </div>
-                    </div>
-                    <div class="chenhansheng-item reveal">
-                        <div class="chenhansheng-ico">
-                            <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                        </div>
-                        <div>
-                            <h4>Key 只存本机</h4>
-                            <p>自己的 DeepSeek Key 仅保存在手机本地，不内置、不上传、不共享，聊天记录也只在本地。</p>
-                        </div>
-                    </div>
-                    <div class="chenhansheng-item chenhansheng-item-cta reveal">
-                        <div>
-                            <h4>立即体验陈汉升</h4>
-                            <p>原生安卓 APK 直链下载 · 百度网盘镜像 · 开源技能库人格蒸馏，前往产品官网获取。</p>
-                        </div>
-                        <a href="https://yan-stone-computer.github.io/awesome-chenhansheng-app/" target="_blank" class="btn btn-chenhansheng">
-                            前往产品官网
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Vision -->
+    <!-- Tech -->
     <section class="section section-vision" id="vision">
         <div class="section-inner">
             <div class="vision-grid">
                 <div class="vision-text reveal">
                     <div class="section-label">
                         <span class="label-line"></span>
-                        技术愿景
+                        技术实现
                     </div>
-                    <h2>让 AI 成为每个人<br>触手可及的伙伴</h2>
-                    <p>我们相信，人工智能的真正价值不在于炫技，而在于润物无声地融入日常，成为人们工作、学习、旅行中自然而然的助手。</p>
-                    <p>天枢序列致力于构建以人为本的 AI 原生应用——隐私优先、体验优先、价值优先。从桌面到移动端，从效率工具到生活服务，我们持续探索技术与人文的交汇点。</p>
+                    <h2>产品的<br>技术实现</h2>
+                    <p>各产品均采用原生技术栈开发（桌面 Qt、鸿蒙 ArkTS、安卓 Kotlin），数据与密钥默认保存在本机，不上传服务器。</p>
+                    <p>产品的源码与使用文档已在 GitHub 公开，仓库地址如下，欢迎查阅、反馈或参与贡献。</p>
                     <div class="vision-values">
-                        <div class="value-item">
+                        <a class="value-item" href="https://github.com/yan-stone-computer/PolarisNote" target="_blank" rel="noopener">
                             <span class="value-num">01</span>
                             <div>
-                                <h4>用户至上</h4>
-                                <p>每一个功能都源于真实需求</p>
+                                <h4>PolarisNote</h4>
+                                <p>天枢便签源码仓库（Qt 6 / C++）</p>
                             </div>
-                        </div>
-                        <div class="value-item">
+                        </a>
+                        <a class="value-item" href="https://github.com/yan-stone-computer/awesome-chenhansheng-app" target="_blank" rel="noopener">
                             <span class="value-num">02</span>
                             <div>
-                                <h4>技术务实</h4>
-                                <p>选择最合适的方案，而非最复杂的技术</p>
+                                <h4>awesome-chenhansheng-app</h4>
+                                <p>陈汉升产品官网与人格技能库（Kotlin）</p>
                             </div>
-                        </div>
-                        <div class="value-item">
+                        </a>
+                        <a class="value-item" href="https://github.com/yan-stone-computer/tianshu-sequence" target="_blank" rel="noopener">
                             <span class="value-num">03</span>
                             <div>
-                                <h4>开放共享</h4>
-                                <p>开源社区是我们持续成长的土壤</p>
+                                <h4>tianshu-sequence</h4>
+                                <p>本官网源码仓库</p>
                             </div>
-                        </div>
+                        </a>
                     </div>
                 </div>
                 <div class="vision-visual reveal">
@@ -560,16 +298,16 @@
                         </div>
                         <div class="tech-metrics">
                             <div class="metric">
-                                <span class="metric-num">3</span>
+                                <span class="metric-num" id="techMetricProducts">0</span>
                                 <span class="metric-label">核心产品</span>
                             </div>
                             <div class="metric">
-                                <span class="metric-num">3</span>
-                                <span class="metric-label">开发平台</span>
+                                <span class="metric-num" id="techMetricPlatforms">0</span>
+                                <span class="metric-label">支持平台</span>
                             </div>
                             <div class="metric">
-                                <span class="metric-num">∞</span>
-                                <span class="metric-label">迭代可能</span>
+                                <span class="metric-num" id="techMetricTags">0</span>
+                                <span class="metric-label">技术组件</span>
                             </div>
                         </div>
                     </div>
@@ -587,8 +325,8 @@
         <div class="section-inner">
             <div class="cta-content reveal">
                 <img src="assets/logo.png" alt="天枢序列" class="cta-logo">
-                <h2>与天枢序列一起<br>书写下一个篇章</h2>
-                <p>无论你是用户、开发者还是合作伙伴，都欢迎与我们联系，共同探讨 AI 应用的无限可能。</p>
+                <h2>意见与反馈</h2>
+                <p>如果你在使用产品时遇到问题，或有功能建议，可通过 GitHub Issue 反馈，我们会尽快处理。</p>
                 <div class="cta-actions">
                     <a href="https://github.com/yan-stone-computer" target="_blank" class="btn btn-white">
                         <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
@@ -611,15 +349,13 @@
                     <img src="assets/logo.png" alt="天枢序列" class="footer-logo">
                     <div>
                         <div class="footer-brand-name">天枢序列</div>
-                        <p class="footer-brand-desc">以代码书写未来。专注 AI 原生应用与跨端体验的创新团队。</p>
+                        <p class="footer-brand-desc">天枢序列产品官网，集中介绍并分发天枢便签、枢游记与陈汉升三款产品。</p>
                     </div>
                 </div>
                 <div class="footer-cols">
                     <div class="footer-col">
                         <h5>产品</h5>
-                        <a href="https://yan-stone-computer.github.io/polarisnote-web/" target="_blank">天枢便签 PolarisNote</a>
-                        <a href="https://yan-stone-computer.github.io/ShuYouJi-Web/" target="_blank">枢游记 ShuYouJi</a>
-                        <a href="https://yan-stone-computer.github.io/awesome-chenhansheng-app/" target="_blank">陈汉升 ChenHanshen</a>
+                        <div id="footerProducts"></div>
                     </div>
                     <div class="footer-col">
                         <h5>资源</h5>
@@ -630,7 +366,7 @@
                     <div class="footer-col">
                         <h5>关于</h5>
                         <a href="#about">团队介绍</a>
-                        <a href="#vision">技术愿景</a>
+                        <a href="#vision">技术实现</a>
                         <a href="#contact">联系我们</a>
                     </div>
                 </div>
@@ -641,12 +377,8 @@
         </div>
     </footer>
 
-    <!-- Lightbox -->
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
-        <img id="lightboxImg" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="preview">
-    </div>
-
+    <script src="products-data.js"></script>
+    <script src="article-config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

@@ -5,163 +5,75 @@
 (function () {
     'use strict';
 
-    // ─── 新品推荐 · 轮播数据配置 ───
-    // 新增产品时，只需在数组里追加一项即可自动出现在推荐页
-    const carouselSlides = [
-        {
-            name: '天枢便签',
-            en: 'PolarisNote',
-            badges: [{ text: '推荐', cls: 'carousel-badge-new' }, { text: '桌面效率', cls: 'carousel-badge-polaris' }],
-            desc: '融合 AI 智能助手、看板式管理与富文本编辑的下一代效率神器，Windows / Linux 全平台原生支持。',
-            cover: 'assets/polaris-main.png',
-            link: 'https://yan-stone-computer.github.io/polarisnote-web/',
-            linkText: '了解更多'
-        },
-        {
-            name: '枢游记',
-            en: 'ShuYouJi',
-            badges: [{ text: '新品', cls: 'carousel-badge-new' }, { text: '鸿蒙原生', cls: 'carousel-badge-shuyouji' }],
-            desc: '基于 HarmonyOS NEXT 原生开发的 AI 智能旅行助手：图像修复、文化知识、行程规划，双端适配。',
-            cover: 'assets/shuyouji-poster.png',
-            link: 'https://yan-stone-computer.github.io/ShuYouJi-Web/',
-            linkText: '了解更多'
-        },
-        {
-            name: '陈汉升',
-            en: 'ChenHanshen',
-            badges: [{ text: '新品', cls: 'carousel-badge-new' }, { text: '角色对话', cls: 'carousel-badge-chenhansheng' }],
-            desc: '原生安卓 AI 角色扮演 App：把《我真没想重生啊》男主装进手机，人格对话、发图识图、AI 生图零配置。',
-            cover: 'assets/chenhansheng-cover.jpg',
-            link: 'https://yan-stone-computer.github.io/awesome-chenhansheng-app/',
-            linkText: '前往产品官网'
-        }
-        // ── 未来新品示例 ──
-        // {
-        //     name: '新产品名',
-        //     en: 'NewProduct',
-        //     badges: [{ text: 'NEW', cls: 'carousel-badge-new' }, { text: '分类', cls: 'carousel-badge-polaris' }],
-        //     desc: '一句话简介……',
-        //     cover: 'assets/xxx.png',
-        //     link: 'https://example.com',
-        //     linkText: '了解更多'
-        // }
-    ];
+    // ─── 产品矩阵 · 数据来自 products-data.js ───
+    const productSlides = window.PRODUCTS_DATA || [];
 
-    // ─── 新品推荐 · 轮播渲染与交互 ───
-    const carouselTrack = document.getElementById('carouselTrack');
-    if (carouselTrack) {
-        const viewport = document.getElementById('carouselViewport');
-        const prevBtn = document.getElementById('carouselPrev');
-        const nextBtn = document.getElementById('carouselNext');
-        const dotsWrap = document.getElementById('carouselDots');
-
+    // ─── 产品矩阵 · 循环轮播渲染与交互 ───
+    const pcTrack = document.getElementById('pcTrack');
+    if (pcTrack) {
+        const pcPrev = document.getElementById('pcPrev');
+        const pcNext = document.getElementById('pcNext');
+        const pcDots = document.getElementById('pcDots');
+        const wrap = document.getElementById('productCarousel');
+        const slides = [];
         let current = 0;
         let autoTimer = null;
-        let cardGap = 24;
+        const INTERVAL = 4000;
 
-        // 渲染卡片（含"即将上线"占位卡）
-        function renderCards() {
-            carouselSlides.forEach(slide => {
-                const card = document.createElement('div');
-                card.className = 'carousel-card';
-                card.innerHTML = `
-                    <div class="carousel-card-cover">
-                        <div class="carousel-badges">
-                            ${slide.badges.map(b => `<span class="carousel-badge ${b.cls}">${b.text}</span>`).join('')}
+        function renderSlides() {
+            productSlides.forEach((p, i) => {
+                const slide = document.createElement('div');
+                slide.className = 'pc-slide' + (i === 0 ? ' active' : '');
+                slide.innerHTML = `
+                    <div class="pc-card pc-card-${p.accent}">
+                        <div class="pc-card-top">
+                            <div class="pc-icon pc-icon-${p.accent}">
+                                ${p.iconSvg || `<img src="${p.iconImg}" alt="${p.name}">`}
+                            </div>
+                            <span class="pc-tag pc-tag-${p.accent}">${p.tag}</span>
                         </div>
-                        <img src="${slide.cover}" alt="${slide.name}" loading="lazy">
-                    </div>
-                    <div class="carousel-card-body">
-                        <h3 class="carousel-card-name">${slide.name}<span>${slide.en}</span></h3>
-                        <p class="carousel-card-desc">${slide.desc}</p>
-                        <a href="${slide.link}" target="_blank" class="carousel-card-link">
-                            ${slide.linkText}
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                        </a>
+                        <h3 class="pc-name">${p.name}<span>${p.en}</span></h3>
+                        <p class="pc-desc">${p.desc}</p>
+                        <div class="pc-tags">
+                            ${p.tags.map(t => `<span>${t}</span>`).join('')}
+                        </div>
+                        <div class="pc-features">
+                            ${p.features.map(f => `<span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${f}</span>`).join('')}
+                        </div>
+                        <div class="pc-meta">
+                            ${p.meta.map(m => `<span><b>${m.k}</b>${m.v}</span>`).join('')}
+                        </div>
+                        <div class="pc-actions">
+                            <a href="${p.site}" target="_blank" rel="noopener" class="btn pc-site pc-site-${p.accent}">
+                                前往产品官网
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                            </a>
+                        </div>
                     </div>
                 `;
-                carouselTrack.appendChild(card);
+                pcTrack.appendChild(slide);
+                slides.push(slide);
             });
-
-            // 占位卡
-            const soonCard = document.createElement('div');
-            soonCard.className = 'carousel-card carousel-card-soon';
-            soonCard.innerHTML = `
-                <div class="carousel-soon-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-                </div>
-                <h4>更多产品，即将上线</h4>
-                <p>天枢序列持续探索 AI 原生应用的边界，敬请期待</p>
-            `;
-            carouselTrack.appendChild(soonCard);
-        }
-
-        // 计算每屏可见卡片数与最大索引
-        function getMetrics() {
-            const card = carouselTrack.querySelector('.carousel-card');
-            if (!card) return { perView: 1, maxIndex: 0, step: 1 };
-            const cardWidth = card.getBoundingClientRect().width;
-            const viewportWidth = viewport ? viewport.getBoundingClientRect().width : cardWidth;
-            const perView = Math.max(1, Math.floor((viewportWidth + cardGap) / (cardWidth + cardGap)));
-            const total = carouselTrack.children.length;
-            const maxIndex = Math.max(0, total - perView);
-            return { perView, maxIndex };
         }
 
         function update() {
-            const { maxIndex } = getMetrics();
-            current = Math.min(current, maxIndex);
-            const card = carouselTrack.querySelector('.carousel-card');
-            const cardWidth = card ? card.getBoundingClientRect().width : 0;
-            const offset = current * (cardWidth + cardGap);
-            carouselTrack.style.transform = `translateX(-${offset}px)`;
-
-            // Dots
-            if (dotsWrap) {
-                dotsWrap.innerHTML = '';
-                for (let i = 0; i <= maxIndex; i++) {
-                    const dot = document.createElement('button');
-                    dot.className = 'carousel-dot' + (i === current ? ' active' : '');
-                    dot.setAttribute('aria-label', `第 ${i + 1} 页`);
-                    dot.addEventListener('click', () => {
-                        current = i;
-                        update();
-                        restartAuto();
-                    });
-                    dotsWrap.appendChild(dot);
-                }
-            }
-
-            if (prevBtn) prevBtn.disabled = current === 0;
-            if (nextBtn) nextBtn.disabled = current >= maxIndex;
-        }
-
-        function next() {
-            const { maxIndex } = getMetrics();
-            if (current < maxIndex) {
-                current++;
-                update();
+            slides.forEach((s, i) => s.classList.toggle('active', i === current));
+            if (pcDots) {
+                [...pcDots.children].forEach((d, i) => d.classList.toggle('active', i === current));
             }
         }
 
-        function prev() {
-            if (current > 0) {
-                current--;
-                update();
-            }
+        function go(i) {
+            current = (i + slides.length) % slides.length;
+            update();
         }
+
+        function next() { go(current + 1); }
+        function prev() { go(current - 1); }
 
         function startAuto() {
             stopAuto();
-            autoTimer = setInterval(() => {
-                const { maxIndex } = getMetrics();
-                if (current >= maxIndex) {
-                    current = 0;
-                    update();
-                } else {
-                    next();
-                }
-            }, 5000);
+            autoTimer = setInterval(next, INTERVAL);
         }
 
         function stopAuto() {
@@ -176,73 +88,306 @@
             startAuto();
         }
 
-        // 拖拽滑动
-        let isDragging = false;
-        let startX = 0;
-        let startScrollOffset = 0;
+        if (pcPrev) pcPrev.addEventListener('click', () => { prev(); restartAuto(); });
+        if (pcNext) pcNext.addEventListener('click', () => { next(); restartAuto(); });
 
-        function dragStart(e) {
-            isDragging = true;
-            startX = (e.touches ? e.touches[0].clientX : e.clientX);
-            startScrollOffset = current;
-            carouselTrack.classList.add('dragging');
+        if (pcDots) {
+            productSlides.forEach((_, i) => {
+                const dot = document.createElement('button');
+                dot.className = 'pc-dot' + (i === 0 ? ' active' : '');
+                dot.setAttribute('aria-label', `第 ${i + 1} 个产品`);
+                dot.addEventListener('click', () => { go(i); restartAuto(); });
+                pcDots.appendChild(dot);
+            });
+        }
+
+        if (wrap) {
+            wrap.addEventListener('mouseenter', stopAuto);
+            wrap.addEventListener('mouseleave', startAuto);
+        }
+
+        // 触摸滑动切换
+        let touchX = null;
+        pcTrack.addEventListener('touchstart', e => {
+            touchX = e.touches[0].clientX;
             stopAuto();
-        }
-
-        function dragMove(e) {
-            if (!isDragging) return;
-            const clientX = (e.touches ? e.touches[0].clientX : e.clientX);
-            const dx = clientX - startX;
-            if (Math.abs(dx) > 8) e.preventDefault();
-            // 半透明跟随效果
-            const card = carouselTrack.querySelector('.carousel-card');
-            if (card) {
-                const cardWidth = card.getBoundingClientRect().width + cardGap;
-                carouselTrack.style.transform = `translateX(${(startScrollOffset * -cardWidth) + dx}px)`;
-            }
-        }
-
-        function dragEnd(e) {
-            if (!isDragging) return;
-            isDragging = false;
-            carouselTrack.classList.remove('dragging');
-            const clientX = (e.changedTouches ? e.changedTouches[0].clientX : e.clientX);
-            const dx = clientX - startX;
-            const card = carouselTrack.querySelector('.carousel-card');
-            const threshold = card ? card.getBoundingClientRect().width / 4 : 40;
-
-            if (Math.abs(dx) > threshold) {
+        }, { passive: true });
+        pcTrack.addEventListener('touchend', e => {
+            if (touchX === null) return;
+            const dx = e.changedTouches[0].clientX - touchX;
+            if (Math.abs(dx) > 48) {
                 if (dx < 0) next();
                 else prev();
-            } else {
-                update();
             }
-            restartAuto();
-        }
+            touchX = null;
+            startAuto();
+        }, { passive: true });
 
-        carouselTrack.addEventListener('mousedown', dragStart);
-        window.addEventListener('mousemove', dragMove);
-        window.addEventListener('mouseup', dragEnd);
-        carouselTrack.addEventListener('touchstart', dragStart, { passive: true });
-        carouselTrack.addEventListener('touchmove', dragMove, { passive: false });
-        carouselTrack.addEventListener('touchend', dragEnd);
-
-        if (prevBtn) prevBtn.addEventListener('click', () => { prev(); restartAuto(); });
-        if (nextBtn) nextBtn.addEventListener('click', () => { next(); restartAuto(); });
-
-        // 悬停暂停
-        const carouselWrap = document.querySelector('.carousel');
-        if (carouselWrap) {
-            carouselWrap.addEventListener('mouseenter', stopAuto);
-            carouselWrap.addEventListener('mouseleave', startAuto);
-        }
-
-        renderCards();
+        renderSlides();
         update();
         startAuto();
-
-        window.addEventListener('resize', () => update());
     }
+
+    // ─── 产品数据驱动的通用内容 ───
+    const products = productSlides;
+
+    // 关于我们：产品数量
+    const aboutCount = document.getElementById('aboutProductCount');
+    if (aboutCount) aboutCount.textContent = String(products.length);
+
+    // Hero 统计：款产品 / 个平台 / 项功能亮点 / 个开源仓库
+    const platformSet = new Set();
+    let featureCount = 0;
+    let repoCount = 0;
+    products.forEach(p => {
+        (p.platforms || []).forEach(x => platformSet.add(x));
+        featureCount += (p.features || []).length;
+        if (p.repo) repoCount++;
+    });
+    const heroStats = {
+        statProducts: products.length,
+        statPlatforms: platformSet.size,
+        statFeatures: featureCount,
+        statRepos: repoCount
+    };
+    Object.keys(heroStats).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.querySelector('.stat-num').dataset.target = String(heroStats[id]);
+    });
+
+    // 技术实现区指标
+    const techMetricProducts = document.getElementById('techMetricProducts');
+    if (techMetricProducts) techMetricProducts.textContent = String(products.length);
+    const techMetricPlatforms = document.getElementById('techMetricPlatforms');
+    if (techMetricPlatforms) techMetricPlatforms.textContent = String(platformSet.size);
+    const techMetricTags = document.getElementById('techMetricTags');
+    if (techMetricTags) techMetricTags.textContent = String(document.querySelectorAll('.tech-tag').length);
+
+    // 页脚产品链接
+    const footerProducts = document.getElementById('footerProducts');
+    if (footerProducts) {
+        footerProducts.innerHTML = products.map(p => `
+            <a href="${p.site}" target="_blank" rel="noopener">${p.name} ${p.en}</a>
+        `).join('');
+    }
+
+    // 查看全部产品弹层
+    const pcViewAll = document.getElementById('pcViewAll');
+    const pcModal = document.getElementById('pcModal');
+    const pcModalGrid = document.getElementById('pcModalGrid');
+
+    function renderAllProducts() {
+        if (!pcModalGrid) return;
+        pcModalGrid.innerHTML = products.map(p => `
+            <div class="pc-modal-card">
+                <div class="pmc-head">
+                    <div class="pmc-icon pc-icon-${p.accent}">
+                        ${p.iconSvg || `<img src="${p.iconImg}" alt="${p.name}">`}
+                    </div>
+                    <div>
+                        <h4>${p.name}<span>${p.en}</span></h4>
+                        <span class="pc-tag pc-tag-${p.accent}">${p.tag}</span>
+                    </div>
+                </div>
+                <p class="pmc-desc">${p.desc}</p>
+                <div class="pmc-meta">
+                    ${p.meta.map(m => `<span><b>${m.k}</b>${m.v}</span>`).join('')}
+                </div>
+                <a href="${p.site}" target="_blank" rel="noopener" class="btn btn-sm pc-site pc-site-${p.accent}">
+                    前往产品官网
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                </a>
+            </div>
+        `).join('');
+    }
+
+    function openAllProducts() {
+        if (!pcModal) return;
+        renderAllProducts();
+        pcModal.hidden = false;
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeAllProducts() {
+        if (!pcModal) return;
+        pcModal.hidden = true;
+        document.body.style.overflow = '';
+    }
+
+    if (pcViewAll) pcViewAll.addEventListener('click', openAllProducts);
+    if (pcModal) {
+        pcModal.addEventListener('click', (e) => {
+            if (e.target.closest('[data-close]')) closeAllProducts();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAllProducts();
+        });
+    }
+
+    // ─── 技术文章 · 分享与投稿 ───
+    const ARTICLE_STORAGE_KEY = 'tianshu_articles_v1';
+
+    function loadArticles() {
+        try {
+            const raw = localStorage.getItem(ARTICLE_STORAGE_KEY);
+            const list = raw ? JSON.parse(raw) : [];
+            return Array.isArray(list) ? list : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveArticles(list) {
+        try {
+            localStorage.setItem(ARTICLE_STORAGE_KEY, JSON.stringify(list));
+        } catch (e) { /* 存储不可用时静默忽略 */ }
+    }
+
+    function escapeHtml(str) {
+        return String(str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    function formatDate(iso) {
+        const d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        const p = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`;
+    }
+
+    const articleList = document.getElementById('articleList');
+
+    function renderArticles() {
+        if (!articleList) return;
+        const list = loadArticles();
+        if (!list.length) {
+            articleList.innerHTML = `
+                <div class="articles-empty">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                    <h4>还没有文章</h4>
+                    <p>来发布第一篇技术分享吧。</p>
+                </div>
+            `;
+            return;
+        }
+        articleList.innerHTML = list.map(a => `
+            <article class="article-card" data-id="${a.id}">
+                <div class="ac-head">
+                    <span class="ac-cat">${escapeHtml(a.category || '其他')}</span>
+                    <span class="ac-date">${escapeHtml(formatDate(a.date))}</span>
+                </div>
+                <h3 class="ac-title">${escapeHtml(a.title)}</h3>
+                <p class="ac-author">作者：${escapeHtml(a.author)}</p>
+                <div class="ac-body">${escapeHtml(a.content)}</div>
+                <button type="button" class="ac-toggle">展开全文</button>
+            </article>
+        `).join('');
+    }
+
+    // 展开 / 收起全文
+    if (articleList) {
+        articleList.addEventListener('click', (e) => {
+            const btn = e.target.closest('.ac-toggle');
+            if (!btn) return;
+            const card = btn.closest('.article-card');
+            if (!card) return;
+            const expanded = card.classList.toggle('expanded');
+            btn.textContent = expanded ? '收起' : '展开全文';
+        });
+    }
+
+    // 校验码验证：PBKDF2 迭代慢哈希（加盐）
+    async function verifyUploadCode(input) {
+        const cfg = window.ARTICLE_CONFIG;
+        if (!cfg || !window.crypto || !window.crypto.subtle) return false;
+        try {
+            const enc = new TextEncoder();
+            const salt = Uint8Array.from(atob(cfg.salt), c => c.charCodeAt(0));
+            const material = await crypto.subtle.importKey('raw', enc.encode(input), 'PBKDF2', false, ['deriveBits']);
+            const bits = await crypto.subtle.deriveBits({
+                name: 'PBKDF2',
+                salt,
+                iterations: cfg.iterations,
+                hash: cfg.algorithm
+            }, material, 256);
+            const derived = btoa(String.fromCharCode(...new Uint8Array(bits)));
+            return derived === cfg.hash;
+        } catch (err) {
+            return false;
+        }
+    }
+
+    const articleForm = document.getElementById('articleForm');
+    const artMsg = document.getElementById('artMsg');
+    const artSubmit = document.getElementById('artSubmit');
+
+    // 分类选项来自 article-config.js
+    const artCategory = document.getElementById('artCategory');
+    if (artCategory && window.ARTICLE_CATEGORIES) {
+        artCategory.innerHTML = window.ARTICLE_CATEGORIES.map(c => `<option value="${c}">${c}</option>`).join('');
+    }
+
+    function showMsg(text, ok) {
+        if (!artMsg) return;
+        artMsg.textContent = text;
+        artMsg.className = 'au-msg' + (ok ? ' ok' : ' err');
+    }
+
+    if (articleForm) {
+        articleForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('artTitle').value.trim();
+            const author = document.getElementById('artAuthor').value.trim();
+            const category = document.getElementById('artCategory').value;
+            const content = document.getElementById('artContent').value.trim();
+            const code = document.getElementById('artCode').value;
+
+            if (!title || !author || !content) {
+                showMsg('请填写标题、作者和内容。', false);
+                return;
+            }
+            if (!code) {
+                showMsg('请输入上传校验码。', false);
+                return;
+            }
+            if (!window.crypto || !window.crypto.subtle) {
+                showMsg('当前环境不支持安全校验，请在 HTTPS 或本地服务器环境下使用。', false);
+                return;
+            }
+
+            artSubmit.disabled = true;
+            artSubmit.textContent = '校验中…';
+            try {
+                const ok = await verifyUploadCode(code);
+                if (!ok) {
+                    showMsg('校验码错误，无法发布。', false);
+                    return;
+                }
+                const list = loadArticles();
+                list.unshift({
+                    id: 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+                    title,
+                    author,
+                    category,
+                    content,
+                    date: new Date().toISOString()
+                });
+                saveArticles(list);
+                renderArticles();
+                articleForm.reset();
+                showMsg('发布成功，文章已展示在列表中。', true);
+            } finally {
+                artSubmit.disabled = false;
+                artSubmit.textContent = '发布文章';
+            }
+        });
+    }
+
+    renderArticles();
 
     // ─── Scroll Progress ───
     const scrollProgress = document.getElementById('scrollProgress');
@@ -436,61 +581,6 @@
             }
         });
     }
-
-    // ─── Product Card Scroll to Detail ───
-    const polarisCard = document.getElementById('polarisCard');
-    const shuyoujiCard = document.getElementById('shuyoujiCard');
-
-    if (polarisCard) {
-        polarisCard.addEventListener('click', (e) => {
-            if (e.target.closest('a')) return;
-            const target = document.getElementById('polaris');
-            if (target) {
-                const offset = navbar ? navbar.offsetHeight + 20 : 80;
-                const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-                window.scrollTo({ top, behavior: 'smooth' });
-            }
-        });
-    }
-
-    if (shuyoujiCard) {
-        shuyoujiCard.addEventListener('click', (e) => {
-            if (e.target.closest('a')) return;
-            const target = document.getElementById('shuyouji');
-            if (target) {
-                const offset = navbar ? navbar.offsetHeight + 20 : 80;
-                const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
-                window.scrollTo({ top, behavior: 'smooth' });
-            }
-        });
-    }
-
-    // ─── Lightbox ───
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightboxImg');
-
-    window.openLightbox = function(src) {
-        if (!lightbox || !lightboxImg) return;
-        lightboxImg.src = src;
-        lightbox.classList.add('open');
-        document.body.style.overflow = 'hidden';
-    };
-
-    window.closeLightbox = function() {
-        if (!lightbox) return;
-        lightbox.classList.remove('open');
-        document.body.style.overflow = '';
-    };
-
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeLightbox();
-    });
-
-    // Add click handlers to showcase images
-    document.querySelectorAll('.showcase-img-frame img').forEach(img => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', () => openLightbox(img.src));
-    });
 
     // ─── Navigation Active State ───
     const sections = document.querySelectorAll('section[id], header[id]');

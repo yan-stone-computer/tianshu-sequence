@@ -14,7 +14,7 @@
 ![License MIT](https://img.shields.io/badge/License-MIT-0d6b4e?style=for-the-badge)
 
 > 我们是一支由青年开发者组成的创新团队，专注于 AI 与原生体验的深度融合。
-> 从桌面效率工具到鸿蒙生态应用，每一行代码都在重新定义人与数字世界的交互方式。
+> 从桌面效率工具到鸿蒙、安卓应用，覆盖三大平台的产品均已开源发布。
 
 **🔥 在线预览：https://yan-stone-computer.github.io/tianshu-sequence/**
 
@@ -26,7 +26,7 @@
 
 | | 特色 |
 |---|---|
-| 🎨 | **大厂级设计**：深色 Hero + 橙色品牌视觉，动效细腻 |
+| 🎨 | **简洁响应式设计**：深色 Hero + 橙色品牌视觉，动效细腻 |
 | 🚀 | **零依赖**：纯 HTML / CSS / JS 实现，无需构建即可运行 |
 | ⚡ | **沉浸式交互**：粒子网络背景、滚动揭示、数字动画、图片灯箱 |
 | 📱 | **完全响应式**：桌面 / 平板 / 手机全端适配 |
@@ -38,7 +38,7 @@
 
 ### 天枢便签 · PolarisNote
 
-> 融合 AI 智能助手、看板式管理与富文本编辑于一体的下一代效率神器。数据本地存储、隐私至上，Windows / Linux 全平台原生支持。
+> 融合 AI 智能助手、看板式管理与富文本编辑于一体的桌面笔记工具。数据本地存储，Windows / Linux 全平台原生支持。
 
 - 🗂️ 类 Trello 看板布局，多任务栏灵活组织工作流
 - 🤖 AI 生成便签、续写内容、分析文档、智能问答
@@ -63,7 +63,7 @@
 
 > 把《我真没想重生啊》里的陈汉升装进手机——原生安卓 AI 角色扮演 App。人情世故、恋爱技巧、职场江湖，啥都能聊。
 
-- 🗣️ 陈汉升人格对话：口头禅、笑声、见人下菜的语气与江湖智慧，深度还原角色
+- 🗣️ 陈汉升人格对话：角色话术与性格设定基于《我真没想重生啊》原著构建
 - 🖼️ 发图识图 + AI 生图：内置国内免费引擎，零配置开箱即用
 - 🧠 1000+ 章剧情知识库 + 会话记忆
 - 🔒 Key 只存本机，聊天记录本地保存，纯 Kotlin 原生开发
@@ -80,12 +80,24 @@
 
 <img src="assets/polaris-main.png" width="640" alt="天枢便签主界面" />
 
-**产品矩阵 · 技术愿景**
+**产品矩阵 · 技术实现**
 
 <img src="assets/shuyouji-poster.png" width="320" alt="枢游记品牌海报" />
 <img src="assets/polaris-dashboard.png" width="320" alt="天枢便签数据仪表盘" />
 
 </div>
+
+## 📝 技术文章投稿
+
+官网内置「技术文章」板块：任何人都可以投稿，发布前需输入上传校验码。
+
+- 校验码采用 **PBKDF2-HMAC-SHA256 慢哈希 + 随机盐** 存储（310,000 次迭代），配置见 `article-config.js`，明文不落盘。
+- 文章当前保存在浏览器 `localStorage`（按访问者本机保存）；如需全站共享投稿数据，请接入后端存储，并把校验码验证迁移到服务端执行。
+- 更换校验码：重新生成密码后，同步更新 `article-config.js` 中的 `salt` 与 `hash`（可参考下方命令）。
+
+```bash
+node -e "const c=require('crypto');const p='你的新密码';const s=c.randomBytes(16);console.log('SALT='+s.toString('base64'));console.log('HASH='+c.pbkdf2Sync(p,s,310000,32,'sha256').toString('base64'))"
+```
 
 ---
 
@@ -93,7 +105,7 @@
 
 | 技术 | 用途 |
 |---|---|
-| HTML5 + CSS3 | 语义化结构与大厂级视觉设计 |
+| HTML5 + CSS3 | 语义化结构与简洁响应式设计 |
 | JavaScript (ES6+) | 交互逻辑与动画 |
 | CSS Custom Properties | 主题变量，全站统一配色 |
 | IntersectionObserver | 滚动揭示动画 |
