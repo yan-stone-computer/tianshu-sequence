@@ -25,6 +25,15 @@
             cover: 'assets/shuyouji-poster.png',
             link: 'https://yan-stone-computer.github.io/ShuYouJi-Web/',
             linkText: '了解更多'
+        },
+        {
+            name: '陈汉升',
+            en: 'ChenHanshen',
+            badges: [{ text: '新品', cls: 'carousel-badge-new' }, { text: '角色对话', cls: 'carousel-badge-chenhansheng' }],
+            desc: '原生安卓 AI 角色扮演 App：把《我真没想重生啊》男主装进手机，人格对话、发图识图、AI 生图零配置。',
+            cover: 'assets/chenhansheng-cover.jpg',
+            link: 'https://yan-stone-computer.github.io/awesome-chenhansheng-app/',
+            linkText: '前往产品官网'
         }
         // ── 未来新品示例 ──
         // {

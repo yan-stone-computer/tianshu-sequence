@@ -18,6 +18,10 @@
     --c-shuyouji: #0d6b4e;
     --c-shuyouji-light: #1a8a63;
 
+    /* ChenHanshen Accent */
+    --c-chenhansheng: #a16207;
+    --c-chenhansheng-light: #d4af37;
+
     /* Neutrals */
     --c-dark: #0b0f19;
     --c-dark-2: #151b2b;
@@ -33,9 +37,9 @@
     --c-border-light: #f1f5f9;
 
     /* Typography */
-    --font-display: 'Noto Serif SC', 'Georgia', serif;
-    --font-body: 'Noto Sans SC', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+    --font-display: 'Noto Serif SC', 'Source Han Serif SC', 'Source Han Serif CN', 'Songti SC', 'SimSun', serif;
+    --font-body: 'HarmonyOS Sans SC', 'PingFang SC', 'Microsoft YaHei', 'Noto Sans SC', 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'Cascadia Code', 'Consolas', monospace;
 
     /* Shadows */
     --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -45,6 +49,7 @@
     --shadow-glow: 0 0 80px rgba(249, 115, 22, 0.18);
     --shadow-polaris: 0 0 60px rgba(99, 102, 241, 0.18);
     --shadow-shuyouji: 0 0 60px rgba(13, 107, 78, 0.18);
+    --shadow-chenhansheng: 0 0 60px rgba(212, 175, 55, 0.18);
 
     /* Radius */
     --radius-sm: 8px;
@@ -68,6 +73,10 @@ html {
     scroll-behavior: smooth;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+[id] {
+    scroll-margin-top: calc(var(--nav-height) + 20px);
 }
 
 body {
@@ -343,7 +352,7 @@ ul {
     font-weight: 900;
     line-height: 1.1;
     margin-bottom: 24px;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
 }
 
 .hero-title-accent {
@@ -444,6 +453,17 @@ ul {
 .btn-shuyouji:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 28px rgba(13, 107, 78, 0.4);
+}
+
+.btn-chenhansheng {
+    background: linear-gradient(135deg, #d9b13c 0%, #b8932a 100%);
+    color: #171d19;
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+}
+
+.btn-chenhansheng:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(212, 175, 55, 0.42);
 }
 
 .btn-sm {
@@ -638,7 +658,7 @@ ul {
     text-align: center;
     color: var(--c-text);
     margin-bottom: 16px;
-    letter-spacing: -0.02em;
+    letter-spacing: 0.02em;
     line-height: 1.2;
 }
 
@@ -746,6 +766,37 @@ ul {
     box-shadow: var(--shadow-xl), var(--shadow-shuyouji);
 }
 
+.product-card-chenhansheng {
+    grid-column: 1 / -1;
+}
+
+.product-card-chenhansheng .product-card-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr;
+    column-gap: 48px;
+    row-gap: 6px;
+}
+
+.product-card-chenhansheng .product-card-header {
+    grid-column: 1 / -1;
+    margin-bottom: 6px;
+}
+
+.product-card-chenhansheng .product-card-body {
+    min-width: 0;
+}
+
+.product-card-chenhansheng .product-link {
+    align-self: end;
+    margin-bottom: 4px;
+}
+
+.product-card-chenhansheng:hover {
+    border-color: rgba(212, 175, 55, 0.3);
+    box-shadow: var(--shadow-xl), var(--shadow-chenhansheng);
+}
+
 .product-card-glow {
     position: absolute;
     inset: 0;
@@ -760,6 +811,10 @@ ul {
 
 .product-card-shuyouji .product-card-glow {
     background: radial-gradient(ellipse 80% 50% at 20% 0%, rgba(13, 107, 78, 0.08) 0%, transparent 60%);
+}
+
+.product-card-chenhansheng .product-card-glow {
+    background: radial-gradient(ellipse 80% 50% at 20% 0%, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
 }
 
 .product-card:hover .product-card-glow {
@@ -797,6 +852,10 @@ ul {
 
 .product-icon-shuyouji {
     background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+}
+
+.product-icon-chenhansheng {
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
 }
 
 .product-icon img {
@@ -866,6 +925,12 @@ ul {
     color: var(--c-orange);
 }
 
+.product-card-chenhansheng .product-features {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+}
+
 .product-link {
     display: inline-flex;
     align-items: center;
@@ -882,7 +947,15 @@ ul {
 
 /* --- Product Carousel --- */
 .section-showcase {
-    background: var(--c-bg-alt);
+    background: var(--c-dark);
+}
+
+.section-showcase .section-title {
+    color: white;
+}
+
+.section-showcase .section-subtitle {
+    color: rgba(255, 255, 255, 0.62);
 }
 
 .carousel {
@@ -993,6 +1066,11 @@ ul {
     color: white;
 }
 
+.carousel-badge-chenhansheng {
+    background: rgba(161, 98, 7, 0.9);
+    color: white;
+}
+
 .carousel-card-body {
     padding: 24px;
     display: flex;
@@ -1048,6 +1126,10 @@ ul {
     justify-content: center;
     text-align: center;
     cursor: default;
+}
+
+.section-showcase .carousel-card-soon {
+    background: var(--c-bg);
 }
 
 .carousel-card-soon:hover {
@@ -1155,17 +1237,29 @@ ul {
     background: var(--c-orange);
 }
 
+.section-showcase .carousel-dot {
+    background: rgba(255, 255, 255, 0.18);
+}
+
+.section-showcase .carousel-dot.active {
+    background: var(--c-orange);
+}
+
 /* --- Product Detail Sections --- */
 .section-product-detail {
     background: var(--c-bg);
 }
 
 .section-polaris {
-    background: linear-gradient(180deg, var(--c-bg) 0%, #f5f7ff 100%);
+    background: linear-gradient(180deg, var(--c-bg) 0%, var(--c-bg-alt) 100%);
 }
 
 .section-shuyouji {
-    background: linear-gradient(180deg, #f5f7ff 0%, #f0fdf6 100%);
+    background: var(--c-bg-alt);
+}
+
+.section-chenhansheng {
+    background: linear-gradient(180deg, var(--c-bg-alt) 0%, var(--c-bg) 100%);
 }
 
 .product-detail-header {
@@ -1191,6 +1285,12 @@ ul {
     background: rgba(13, 107, 78, 0.08);
     border-color: rgba(13, 107, 78, 0.2);
     color: var(--c-shuyouji);
+}
+
+.product-detail-badge-chenhansheng {
+    background: rgba(212, 175, 55, 0.08);
+    border-color: rgba(212, 175, 55, 0.28);
+    color: var(--c-chenhansheng);
 }
 
 .product-detail-title {
@@ -1239,6 +1339,10 @@ ul {
 
 .section-shuyouji .showcase-frame {
     box-shadow: var(--shadow-xl), var(--shadow-shuyouji);
+}
+
+.section-chenhansheng .device-frame {
+    box-shadow: var(--shadow-xl), var(--shadow-chenhansheng);
 }
 
 .frame-bar {
@@ -1361,6 +1465,97 @@ ul {
     padding: 0;
     color: rgba(255, 255, 255, 0.6);
     margin-bottom: 20px;
+}
+
+/* --- ChenHanshen --- */
+.product-showcase-chenhansheng .showcase-devices {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 48px;
+    margin-bottom: 40px;
+}
+
+.chenhansheng-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+}
+
+.chenhansheng-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px 22px;
+    background: var(--c-bg);
+    border: 1px solid var(--c-border);
+    border-radius: var(--radius-lg);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.chenhansheng-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: rgba(212, 175, 55, 0.35);
+}
+
+.chenhansheng-ico {
+    flex: 0 0 auto;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(212, 175, 55, 0.12);
+}
+
+.chenhansheng-ico svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--c-chenhansheng);
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.chenhansheng-item h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: 6px;
+}
+
+.chenhansheng-item p {
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--c-text-secondary);
+}
+
+.chenhansheng-item-cta {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+    background: linear-gradient(135deg, var(--c-dark) 0%, var(--c-dark-2) 100%);
+    border: none;
+}
+
+.chenhansheng-item-cta:hover {
+    background: linear-gradient(135deg, var(--c-dark-2) 0%, var(--c-dark-3) 100%);
+}
+
+.chenhansheng-item-cta h4 {
+    color: white;
+    margin-bottom: 6px;
+}
+
+.chenhansheng-item-cta p {
+    color: rgba(255, 255, 255, 0.65);
+    margin: 0;
 }
 
 /* --- Devices --- */
@@ -1800,6 +1995,7 @@ ul {
 .about-grid .about-card:nth-child(4) { transition-delay: 0.24s; }
 
 .products-grid .product-card:nth-child(2) { transition-delay: 0.12s; }
+.products-grid .product-card:nth-child(3) { transition-delay: 0.24s; }
 
 .showcase-grid .showcase-item:nth-child(2) { transition-delay: 0.06s; }
 .showcase-grid .showcase-item:nth-child(3) { transition-delay: 0.12s; }
@@ -1867,6 +2063,15 @@ ul {
 @media (max-width: 768px) {
     :root {
         --nav-height: 64px;
+    }
+
+    .product-card-chenhansheng .product-card-inner {
+        grid-template-columns: 1fr;
+    }
+
+    .product-card-chenhansheng .product-link {
+        align-self: flex-start;
+        margin-top: 6px;
     }
 
     .nav-links {

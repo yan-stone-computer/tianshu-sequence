@@ -59,6 +59,17 @@
 
 🔗 [产品官网](https://yan-stone-computer.github.io/ShuYouJi-Web/)
 
+### 陈汉升 · ChenHanshen
+
+> 把《我真没想重生啊》里的陈汉升装进手机——原生安卓 AI 角色扮演 App。人情世故、恋爱技巧、职场江湖，啥都能聊。
+
+- 🗣️ 陈汉升人格对话：口头禅、笑声、见人下菜的语气与江湖智慧，深度还原角色
+- 🖼️ 发图识图 + AI 生图：内置国内免费引擎，零配置开箱即用
+- 🧠 1000+ 章剧情知识库 + 会话记忆
+- 🔒 Key 只存本机，聊天记录本地保存，纯 Kotlin 原生开发
+
+🔗 [产品官网](https://yan-stone-computer.github.io/awesome-chenhansheng-app/) · [源代码仓库](https://github.com/yan-stone-computer/awesome-chenhansheng-app)
+
 ---
 
 ## 🖥️ 界面预览
@@ -159,7 +170,8 @@ git push
 
 <a href="https://github.com/yan-stone-computer">GitHub</a> · 
 <a href="https://yan-stone-computer.github.io/polarisnote-web/">天枢便签</a> · 
-<a href="https://yan-stone-computer.github.io/ShuYouJi-Web/">枢游记</a>
+<a href="https://yan-stone-computer.github.io/ShuYouJi-Web/">枢游记</a> · 
+<a href="https://yan-stone-computer.github.io/awesome-chenhansheng-app/">陈汉升</a>
 
 © 2026 天枢序列 Tianshu Sequence. All rights reserved.
 
