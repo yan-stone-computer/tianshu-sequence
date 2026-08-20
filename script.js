@@ -260,43 +260,198 @@
     }
 
     const articleList = document.getElementById('articleList');
+    const articleCount = document.getElementById('articleCount');
+    const articlePagination = document.getElementById('articlePagination');
+
+    // Markdown 渲染（marked + DOMPurify；不可用时退化为转义纯文本）
+    function renderMarkdown(text) {
+        const raw = String(text || '');
+        if (window.marked && window.DOMPurify) {
+            try {
+                return window.DOMPurify.sanitize(window.marked.parse(raw, { breaks: true, gfm: true }));
+            } catch (e) { /* 继续走兜底 */ }
+        }
+        return escapeHtml(raw).replace(/\n/g, '<br>');
+    }
+
+    // extract plain-text excerpt from markdown for compact cards
+    function makeExcerpt(md, len) {
+        const limit = len || 140;
+        const plain = String(md || '')
+            .replace(/```[\s\S]*?```/g, ' ')
+            .replace(/`([^`]*)`/g, '$1')
+            .replace(/!\[[^\]]*\]\([^)]*\)/g, '')
+            .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
+            .replace(/^#{1,6}\s*/gm, '')
+            .replace(/^\s*[-*+]\s+/gm, '')
+            .replace(/^\s*>\s?/gm, '')
+            .replace(/[*_~]{1,2}([^*_~]+)[*_~]{1,2}/g, '$1')
+            .replace(/\|/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+        return plain.length > limit ? plain.slice(0, limit) + '…' : plain;
+    }
+
+    const PER_PAGE = 5;
+    let searchKeyword = '';
+    let currentPage = 1;
+
+    function getFilteredArticles() {
+        const kw = searchKeyword.trim().toLowerCase();
+        const list = loadArticles();
+        if (!kw) return list;
+        return list.filter(a =>
+            (a.title || '').toLowerCase().includes(kw) ||
+            (a.author || '').toLowerCase().includes(kw) ||
+            (a.category || '').toLowerCase().includes(kw) ||
+            (a.content || '').toLowerCase().includes(kw)
+        );
+    }
 
     function renderArticles() {
         if (!articleList) return;
-        const list = loadArticles();
-        if (!list.length) {
+        const filtered = getFilteredArticles();
+        const total = filtered.length;
+        const totalPages = Math.max(1, Math.ceil(total / PER_PAGE));
+        if (currentPage > totalPages) currentPage = totalPages;
+        const start = (currentPage - 1) * PER_PAGE;
+        const pageItems = filtered.slice(start, start + PER_PAGE);
+
+        if (articleCount) articleCount.textContent = total ? `共 ${total} 篇` : '';
+
+        if (!pageItems.length) {
             articleList.innerHTML = `
                 <div class="articles-empty">
                     <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                    <h4>还没有文章</h4>
-                    <p>来发布第一篇技术分享吧。</p>
+                    <h4>${searchKeyword.trim() ? '没有找到相关文章' : '还没有文章'}</h4>
+                    <p>${searchKeyword.trim() ? `没有与「${escapeHtml(searchKeyword.trim())}」匹配的内容，换个关键词试试。` : '来发布第一篇技术分享吧（支持 Markdown，可直接上传 .md 文件）。'}</p>
                 </div>
             `;
+            renderPagination(totalPages, total);
             return;
         }
-        articleList.innerHTML = list.map(a => `
+
+        articleList.innerHTML = pageItems.map(a => `
             <article class="article-card" data-id="${a.id}">
                 <div class="ac-head">
                     <span class="ac-cat">${escapeHtml(a.category || '其他')}</span>
-                    <span class="ac-date">${escapeHtml(formatDate(a.date))}</span>
+                    <span class="ac-date">${escapeHtml(formatDate(a.date))}${a.updatedAt ? ' · 已编辑' : ''}</span>
                 </div>
                 <h3 class="ac-title">${escapeHtml(a.title)}</h3>
                 <p class="ac-author">作者：${escapeHtml(a.author)}</p>
-                <div class="ac-body">${escapeHtml(a.content)}</div>
-                <button type="button" class="ac-toggle">展开全文</button>
+                <p class="ac-excerpt">${escapeHtml(makeExcerpt(a.content))}</p>
+                <div class="ac-actions">
+                    <button type="button" class="ac-read">阅读全文</button>
+                    <span class="ac-ops">
+                        <button type="button" class="ac-edit">编辑</button>
+                        <button type="button" class="ac-del">删除</button>
+                    </span>
+                </div>
             </article>
         `).join('');
+        renderPagination(totalPages, total);
     }
 
-    // 展开 / 收起全文
+    function renderPagination(totalPages, total) {
+        if (!articlePagination) return;
+        if (totalPages <= 1) {
+            articlePagination.innerHTML = '';
+            return;
+        }
+        const btn = (label, page, disabled, active) =>
+            `<button type="button" class="ap-btn${active ? ' active' : ''}" data-page="${page}" ${disabled ? 'disabled' : ''}>${label}</button>`;
+        let html = btn('上一页', currentPage - 1, currentPage === 1, false);
+        const pages = [];
+        for (let i = 1; i <= totalPages; i++) {
+            if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
+                pages.push(i);
+            } else if (pages[pages.length - 1] !== '…') {
+                pages.push('…');
+            }
+        }
+        pages.forEach(p => {
+            if (p === '…') html += '<span class="ap-ellipsis">…</span>';
+            else html += btn(String(p), p, false, p === currentPage);
+        });
+        html += btn('下一页', currentPage + 1, currentPage === totalPages, false);
+        articlePagination.innerHTML = html;
+    }
+
+    // 卡片操作：阅读（弹窗）、编辑、删除
     if (articleList) {
         articleList.addEventListener('click', (e) => {
-            const btn = e.target.closest('.ac-toggle');
+            const btn = e.target.closest('button');
             if (!btn) return;
             const card = btn.closest('.article-card');
             if (!card) return;
-            const expanded = card.classList.toggle('expanded');
-            btn.textContent = expanded ? '收起' : '展开全文';
+            const id = card.dataset.id;
+            if (btn.classList.contains('ac-read')) {
+                openArticle(id);
+            } else if (btn.classList.contains('ac-edit')) {
+                startEdit(id);
+            } else if (btn.classList.contains('ac-del')) {
+                openDeleteConfirm(id);
+            }
+        });
+    }
+
+    // 搜索
+    const articleSearch = document.getElementById('articleSearch');
+    if (articleSearch) {
+        articleSearch.addEventListener('input', () => {
+            searchKeyword = articleSearch.value;
+            currentPage = 1;
+            renderArticles();
+        });
+    }
+
+    // 分页
+    if (articlePagination) {
+        articlePagination.addEventListener('click', (e) => {
+            const btn = e.target.closest('.ap-btn');
+            if (!btn || btn.disabled) return;
+            currentPage = parseInt(btn.dataset.page, 10);
+            renderArticles();
+            const listTop = document.querySelector('.articles-col');
+            if (listTop) listTop.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    // 文章阅读弹窗
+    const articleModal = document.getElementById('articleModal');
+    const amTitle = document.getElementById('amTitle');
+    const amAuthor = document.getElementById('amAuthor');
+    const amCat = document.getElementById('amCat');
+    const amDate = document.getElementById('amDate');
+    const amBody = document.getElementById('amBody');
+
+    function openArticle(id) {
+        const a = loadArticles().find(x => x.id === id);
+        if (!articleModal || !a) return;
+        if (amTitle) amTitle.textContent = a.title;
+        if (amAuthor) amAuthor.textContent = '作者：' + a.author;
+        if (amCat) amCat.textContent = a.category || '其他';
+        if (amDate) amDate.textContent = formatDate(a.date) + (a.updatedAt ? ' · 已编辑' : '');
+        if (amBody) amBody.innerHTML = renderMarkdown(a.content);
+        articleModal.hidden = false;
+        document.body.style.overflow = 'hidden';
+        const panel = articleModal.querySelector('.article-modal-panel');
+        if (panel) panel.scrollTop = 0;
+    }
+
+    function closeArticleModal() {
+        if (!articleModal) return;
+        articleModal.hidden = true;
+        document.body.style.overflow = '';
+        if (amBody) amBody.innerHTML = '';
+    }
+
+    if (articleModal) {
+        articleModal.addEventListener('click', (e) => {
+            if (e.target.closest('[data-close]')) closeArticleModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeArticleModal();
         });
     }
 
@@ -337,6 +492,79 @@
         artMsg.className = 'au-msg' + (ok ? ' ok' : ' err');
     }
 
+    // 上传 .md 文件直接载入内容
+    const artMd = document.getElementById('artMd');
+    const artMdName = document.getElementById('artMdName');
+    if (artMd) {
+        artMd.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            if (!/\.(md|markdown)$/i.test(file.name)) {
+                showMsg('请选择 .md 或 .markdown 文件。', false);
+                artMd.value = '';
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                const text = String(reader.result || '');
+                document.getElementById('artContent').value = text;
+                const m = text.match(/^\s*#\s+(.+?)\s*$/m);
+                const titleEl = document.getElementById('artTitle');
+                if (!titleEl.value.trim()) {
+                    titleEl.value = m ? m[1].trim() : file.name.replace(/\.(md|markdown)$/i, '');
+                }
+                if (artMdName) artMdName.textContent = `已载入 ${file.name}（${text.length} 字符）`;
+                showMsg('文件已载入，可继续编辑后发布。', true);
+            };
+            reader.onerror = () => showMsg('文件读取失败，请重试。', false);
+            reader.readAsText(file, 'utf-8');
+        });
+    }
+
+    // 编辑状态
+    const auHeadTitle = document.querySelector('.au-head h3');
+    let editingId = null;
+    let cancelEditBtn = null;
+
+    function startEdit(id) {
+        const a = loadArticles().find(x => x.id === id);
+        if (!a) return;
+        editingId = id;
+        document.getElementById('artTitle').value = a.title;
+        document.getElementById('artAuthor').value = a.author;
+        document.getElementById('artCategory').value = a.category || '其他';
+        document.getElementById('artContent').value = a.content;
+        const codeInput = document.getElementById('artCode');
+        codeInput.value = '';
+        codeInput.placeholder = '输入校验码以保存修改';
+        if (auHeadTitle) auHeadTitle.textContent = '编辑文章';
+        artSubmit.textContent = '保存修改';
+        if (!cancelEditBtn) {
+            cancelEditBtn = document.createElement('button');
+            cancelEditBtn.type = 'button';
+            cancelEditBtn.className = 'btn au-cancel';
+            cancelEditBtn.textContent = '取消编辑';
+            cancelEditBtn.addEventListener('click', resetForm);
+            articleForm.appendChild(cancelEditBtn);
+        }
+        document.getElementById('articleUpload').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function resetForm() {
+        editingId = null;
+        articleForm.reset();
+        const codeInput = document.getElementById('artCode');
+        codeInput.placeholder = '输入校验码';
+        if (auHeadTitle) auHeadTitle.textContent = '投稿文章';
+        artSubmit.textContent = '发布文章';
+        if (cancelEditBtn) {
+            cancelEditBtn.remove();
+            cancelEditBtn = null;
+        }
+        if (artMd) artMd.value = '';
+        if (artMdName) artMdName.textContent = '';
+    }
+
     if (articleForm) {
         articleForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -351,7 +579,7 @@
                 return;
             }
             if (!code) {
-                showMsg('请输入上传校验码。', false);
+                showMsg(editingId ? '请输入校验码以保存修改。' : '请输入上传校验码。', false);
                 return;
             }
             if (!window.crypto || !window.crypto.subtle) {
@@ -364,10 +592,29 @@
             try {
                 const ok = await verifyUploadCode(code);
                 if (!ok) {
-                    showMsg('校验码错误，无法发布。', false);
+                    showMsg('校验码错误。', false);
                     return;
                 }
                 const list = loadArticles();
+                if (editingId) {
+                    const idx = list.findIndex(a => a.id === editingId);
+                    if (idx >= 0) {
+                        list[idx] = {
+                            ...list[idx],
+                            title,
+                            author,
+                            category,
+                            content,
+                            updatedAt: new Date().toISOString()
+                        };
+                        saveArticles(list);
+                        renderArticles();
+                        resetForm();
+                        showMsg('修改已保存。', true);
+                        return;
+                    }
+                    editingId = null;
+                }
                 list.unshift({
                     id: 'a' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
                     title,
@@ -378,11 +625,70 @@
                 });
                 saveArticles(list);
                 renderArticles();
-                articleForm.reset();
+                resetForm();
+                currentPage = 1;
                 showMsg('发布成功，文章已展示在列表中。', true);
             } finally {
                 artSubmit.disabled = false;
-                artSubmit.textContent = '发布文章';
+                artSubmit.textContent = editingId ? '保存修改' : '发布文章';
+            }
+        });
+    }
+
+    // 删除确认（需校验码）
+    const codeModal = document.getElementById('codeModal');
+    const codeModalInput = document.getElementById('codeModalInput');
+    const codeModalMsg = document.getElementById('codeModalMsg');
+    const codeModalOk = document.getElementById('codeModalOk');
+    let deleteTargetId = null;
+
+    function openDeleteConfirm(id) {
+        deleteTargetId = id;
+        if (codeModalInput) codeModalInput.value = '';
+        if (codeModalMsg) {
+            codeModalMsg.textContent = '';
+            codeModalMsg.className = 'code-modal-msg';
+        }
+        if (codeModal) codeModal.hidden = false;
+    }
+
+    function closeCodeModal() {
+        deleteTargetId = null;
+        if (codeModal) codeModal.hidden = true;
+        if (codeModalInput) codeModalInput.value = '';
+    }
+
+    if (codeModal) {
+        codeModal.addEventListener('click', (e) => {
+            if (e.target.closest('[data-close]')) closeCodeModal();
+        });
+    }
+    if (codeModalOk) {
+        codeModalOk.addEventListener('click', async () => {
+            const code = codeModalInput ? codeModalInput.value : '';
+            if (!code) {
+                if (codeModalMsg) codeModalMsg.textContent = '请输入校验码。';
+                return;
+            }
+            if (!window.crypto || !window.crypto.subtle) {
+                if (codeModalMsg) codeModalMsg.textContent = '当前环境不支持安全校验。';
+                return;
+            }
+            codeModalOk.disabled = true;
+            codeModalOk.textContent = '校验中…';
+            try {
+                const ok = await verifyUploadCode(code);
+                if (!ok) {
+                    if (codeModalMsg) codeModalMsg.textContent = '校验码错误。';
+                    return;
+                }
+                const list = loadArticles().filter(a => a.id !== deleteTargetId);
+                saveArticles(list);
+                renderArticles();
+                closeCodeModal();
+            } finally {
+                codeModalOk.disabled = false;
+                codeModalOk.textContent = '确认删除';
             }
         });
     }
