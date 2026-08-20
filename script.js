@@ -226,6 +226,46 @@
 
     // ─── 技术文章 · 分享与投稿 ───
     const ARTICLE_STORAGE_KEY = 'tianshu_articles_v1';
+    let staticArticles = [];
+
+    // 合并站点内置文章（articles/ 目录，GitHub Pages 静态发布）与本地投稿
+    function getAllArticles() {
+        const merged = staticArticles.concat(loadArticles());
+        return merged.sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+    }
+
+    // 从 articles/index.json 清单 + Markdown 文件加载站点内置文章
+    async function loadStaticArticles() {
+        try {
+            const res = await fetch('articles/index.json', { cache: 'no-store' });
+            if (!res.ok) throw new Error('manifest not found');
+            const list = await res.json();
+            if (!Array.isArray(list)) throw new Error('bad manifest');
+
+            const loaded = [];
+            for (const item of list) {
+                const file = String(item.file || '').replace(/^\/+/, '');
+                if (!file) continue;
+                const mdRes = await fetch('articles/' + file, { cache: 'no-store' });
+                if (!mdRes.ok) continue;
+                const content = await mdRes.text();
+                loaded.push({
+                    id: 'static-' + (item.id || file),
+                    title: item.title || file.replace(/\.md$/i, ''),
+                    author: item.author || '天枢序列',
+                    category: item.category || '技术',
+                    date: item.date || new Date().toISOString(),
+                    content: content,
+                    static: true
+                });
+            }
+            staticArticles = loaded;
+        } catch (e) {
+            // 本地 file:// 打开或未部署 articles/ 时，静默降级为仅本地投稿
+            staticArticles = [];
+        }
+        renderArticles();
+    }
 
     function loadArticles() {
         try {
@@ -298,7 +338,7 @@
 
     function getFilteredArticles() {
         const kw = searchKeyword.trim().toLowerCase();
-        const list = loadArticles();
+        const list = getAllArticles();
         if (!kw) return list;
         return list.filter(a =>
             (a.title || '').toLowerCase().includes(kw) ||
@@ -342,10 +382,10 @@
                 <p class="ac-excerpt">${escapeHtml(makeExcerpt(a.content))}</p>
                 <div class="ac-actions">
                     <button type="button" class="ac-read">阅读全文</button>
-                    <span class="ac-ops">
+                    ${a.static ? '' : `<span class="ac-ops">
                         <button type="button" class="ac-edit">编辑</button>
                         <button type="button" class="ac-del">删除</button>
-                    </span>
+                    </span>`}
                 </div>
             </article>
         `).join('');
@@ -426,7 +466,7 @@
     const amBody = document.getElementById('amBody');
 
     function openArticle(id) {
-        const a = loadArticles().find(x => x.id === id);
+        const a = getAllArticles().find(x => x.id === id);
         if (!articleModal || !a) return;
         if (amTitle) amTitle.textContent = a.title;
         if (amAuthor) amAuthor.textContent = '作者：' + a.author;
@@ -694,6 +734,7 @@
     }
 
     renderArticles();
+    loadStaticArticles();
 
     // ─── Scroll Progress ───
     const scrollProgress = document.getElementById('scrollProgress');

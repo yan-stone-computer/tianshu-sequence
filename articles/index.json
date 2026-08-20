@@ -1,0 +1,26 @@
+[
+  {
+    "id": "llm-app-dev-guide",
+    "title": "大模型应用开发实战：从意图识别到 GraphRAG 双路召回",
+    "author": "天枢序列",
+    "category": "AI",
+    "date": "2026-08-20T10:00:00",
+    "file": "llm-app-dev-guide.md"
+  },
+  {
+    "id": "skill-authoring-guide",
+    "title": "从零写一个会「爆」的 Skill：AI 技能包创作指南",
+    "author": "天枢序列",
+    "category": "AI",
+    "date": "2026-08-20T09:00:00",
+    "file": "skill-authoring-guide.md"
+  },
+  {
+    "id": "slow-hash-guide",
+    "title": "迭代式慢哈希加盐（Password Hashing）技术指南",
+    "author": "天枢序列",
+    "category": "安全",
+    "date": "2026-08-20T08:00:00",
+    "file": "slow-hash-guide.md"
+  }
+]
